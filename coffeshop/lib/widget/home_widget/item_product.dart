@@ -1,40 +1,58 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_controller.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coffeshop/common/Utils.dart';
 import 'package:coffeshop/common/styles.dart';
+import 'package:coffeshop/model/m_product.dart';
+import 'package:coffeshop/notifier/product_detail_notifier.dart';
 import 'package:coffeshop/screen/detail_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-class ItemCarousel extends StatelessWidget {
-  CarouselController buttonCarouselController = CarouselController();
+import 'package:provider/provider.dart';
+// ignore: must_be_immutable
+class ItemProduct extends StatelessWidget {
+  List<MProduct> product;
+  ItemProduct({this.product});
   @override
   Widget build(BuildContext context) {
-    return StaggeredGridView.countBuilder(
+    return product.length > 0 ? StaggeredGridView.countBuilder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         crossAxisCount: 4,
         padding: EdgeInsets.only(top:0.0),
-        itemCount: 5,
+        itemCount: product.length,
         itemBuilder: (BuildContext context, int index) {
-          return item(context,index);
+          return item(context,product[index]);
         },
         staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
         mainAxisSpacing: 10.0,
         crossAxisSpacing: 10.0
+    ) : Container(
+      height: (Utils.height(context) / 3) * 2,
+      child: Center(
+        child: CircularProgressIndicator(
+          backgroundColor: BASE_APP_COLOR,
+        ),
+      ),
     );
   }
 }
-Widget item(context,index){
+Widget item(context,MProduct product){
+  final prdVM = Provider.of<ProductDetailModel>(context);
   return InkWell(
     onTap: (){
-      Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(pageBuilder: (_, __, ___) => new DetailProduct()));
+      prdVM.initData(double.parse(product.price));
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (c, a1, a2) => DetailProduct(mProduct: product),
+          transitionsBuilder: (c, anim, a2, child) => FadeTransition(opacity: anim, child: child),
+          transitionDuration: Duration(milliseconds: 350),
+        ),
+      );
     },
     child: Container(
       decoration: BoxDecoration(
-        color: Color(0xFF7F460A),
         borderRadius: BorderRadius.all(Radius.circular(7.0)),
       ),
       child: Stack(
@@ -44,13 +62,16 @@ Widget item(context,index){
             alignment:Alignment.topRight,
             children: [
               SizedBox(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(7.0)),
-                  child: CachedNetworkImage(
-                    imageUrl: index %2 == 0 ? noImage :noImage1,
-                    placeholder: (context, url) =>  Image.asset(image_placeholder,fit: BoxFit.cover,),
-                    errorWidget: (context, url, error) => Image.asset(image_placeholder,fit: BoxFit.cover),
-                    fit: BoxFit.cover,
+                child: Hero(
+                  tag: product.imgUrl,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                    child: CachedNetworkImage(
+                      imageUrl: product.imgUrl,
+                      placeholder: (context, url) =>  Image.asset(image_placeholder,fit: BoxFit.cover,height: 200),
+                      errorWidget: (context, url, error) => Image.asset(image_placeholder,fit: BoxFit.cover,height: 200),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -86,10 +107,10 @@ Widget item(context,index){
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Cappuchino $index",style: title),
+                Text(product.name,style: title),
                 Padding(
                     padding: EdgeInsets.only(top: 5.0),
-                    child: Text("10.000 VND",style: price)),
+                    child: Text(product.price,style: price)),
               ],
             ),
           )

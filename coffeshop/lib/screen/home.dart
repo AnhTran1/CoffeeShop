@@ -1,7 +1,9 @@
 import 'package:coffeshop/common/styles.dart';
+import 'package:coffeshop/notifier/product_notifier.dart';
 import 'package:coffeshop/widget/home_widget/coffee.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -23,10 +25,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
     categoryList.forEach((element) {
       tabs.add(_customTab(element));
     });
-    tabBody.add(Coffee());
-    tabBody.add(Coffee());
-    tabBody.add(Coffee());
-    tabBody.add(Coffee());
+    tabBody.add(Coffee(category: CATEGORY.COFFEE));
+    tabBody.add(Coffee(category: CATEGORY.TEA));
+    tabBody.add(Coffee(category: CATEGORY.CHOCOLATE));
+    tabBody.add(Coffee(category: CATEGORY.FOOD));
   }
   @override
   Widget build(BuildContext context) {

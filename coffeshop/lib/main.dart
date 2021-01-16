@@ -1,8 +1,25 @@
 import 'package:coffeshop/bottom_navigation.dart';
+import 'package:coffeshop/notifier/product_detail_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import 'notifier/product_notifier.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => ProductDetailModel()),
+          ChangeNotifierProvider(create: (context) => ProductModel()),
+        ],
+        child: MyApp(),
+      ),
+    );
+  });
 }
 
 class MyApp extends StatelessWidget {
