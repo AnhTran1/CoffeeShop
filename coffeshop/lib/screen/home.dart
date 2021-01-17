@@ -50,25 +50,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
                   },
                   child: Padding(
                     padding: EdgeInsets.only(right: 15.0),
-                    child: Stack(
-                      alignment: AlignmentDirectional(0.8, -0.8),
-                      children: <Widget>[
-                        IconButton(
-                            onPressed: null,
-                            icon: Icon(
-                              Icons.shopping_cart,
-                              color: WHITE_COLOR,
-                            )),
-                        CircleAvatar(
-                          radius: 10.0,
-                          backgroundColor: Colors.red,
-                          child: Text(
-                            "1",
-                            style: TextStyle(color: Colors.white, fontSize: 13.0),
-                          ),
-                        ),
-                      ],
-                    ),
+                    child:IconButton(
+                        onPressed: null,
+                        icon: Icon(
+                          Icons.event,
+                          color: WHITE_COLOR,
+                        )),
                   )),
             ],
             bottom: TabBar(

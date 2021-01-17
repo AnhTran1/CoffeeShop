@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import 'notifier/cart_notifier.dart';
 import 'notifier/product_notifier.dart';
 
 void main() {
@@ -15,6 +16,7 @@ void main() {
         providers: [
           ChangeNotifierProvider(create: (context) => ProductDetailModel()),
           ChangeNotifierProvider(create: (context) => ProductModel()),
+          ChangeNotifierProvider(create: (context) => CartModel()),
         ],
         child: MyApp(),
       ),

@@ -2,15 +2,40 @@ import 'package:coffeshop/common/Utils.dart';
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/model/m_product.dart';
 import 'package:coffeshop/notifier/product_detail_notifier.dart';
+import 'package:coffeshop/screen/cart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 
 import '../common/Utils.dart';
 import '../common/styles.dart';
-class DetailProduct extends StatelessWidget {
+class DetailProduct extends StatefulWidget {
   MProduct mProduct;
   DetailProduct({this.mProduct});
+  @override
+  _DetailProductState createState() => _DetailProductState();
+}
+
+class _DetailProductState extends State<DetailProduct> with SingleTickerProviderStateMixin {
+  AnimationController controller;
+  Animation<double> offsetAnimation;
+  @override
+  void initState() {
+    controller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+    offsetAnimation = Tween(begin: 0.0, end: 5.0).chain(CurveTween(curve: Curves.elasticIn)).animate(controller)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          controller.reverse();
+        }
+      });
+    super.initState();
+  }
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final prdVM = Provider.of<ProductDetailModel>(context);
@@ -25,12 +50,12 @@ class DetailProduct extends StatelessWidget {
                   Column(
                     children: [
                       Hero(
-                        tag: mProduct.imgUrl,
+                        tag: widget.mProduct.imgUrl,
                         child: SizedBox(
                           height: (Utils.height(context) / 3) + 50,
                           width: Utils.width(context),
                           child: CachedNetworkImage(
-                            imageUrl: mProduct.imgUrl,
+                            imageUrl: widget.mProduct.imgUrl,
                             placeholder: (context, url) =>  Image.asset(image_placeholder,fit: BoxFit.cover,),
                             errorWidget: (context, url, error) => Image.asset(image_placeholder,fit: BoxFit.cover),
                             fit: BoxFit.cover,
@@ -39,22 +64,53 @@ class DetailProduct extends StatelessWidget {
                       )
                     ],
                   ),
-                  InkWell(
-                    onTap: (){
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                        margin: EdgeInsets.only(top: Utils.paddingTop(context),left: 16),
-                        padding: EdgeInsets.only(left: 7.0),
-                        width: 35.0,
-                        height: 35.0,
-                        decoration: BoxDecoration(
-                            color: BASE_APP_COLOR,
-                            borderRadius: BorderRadius.all(Radius.circular(20))
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: (){
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                            margin: EdgeInsets.only(top: Utils.paddingTop(context),left: 16),
+                            padding: EdgeInsets.only(left: 7.0),
+                            width: 32.0,
+                            height: 32.0,
+                            decoration: BoxDecoration(
+                                color: BASE_APP_COLOR,
+                                borderRadius: BorderRadius.all(Radius.circular(20))
+                            ),
+                            child: Icon(Icons.arrow_back_ios,color: WHITE_COLOR)
                         ),
-                        child: Icon(Icons.arrow_back_ios,color: WHITE_COLOR)
-                    ),
-                  ),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(_createRoute());
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 16.0,top:Utils.paddingTop(context)),
+                            child: Stack(
+                              alignment: AlignmentDirectional(0.8, -0.8),
+                              children: <Widget>[
+                                IconButton(
+                                    onPressed: null,
+                                    icon: Icon(
+                                      Icons.shopping_cart,
+                                      color: BASE_APP_COLOR,
+                                    )),
+                                CircleAvatar(
+                                  radius: 10.0,
+                                  backgroundColor: Colors.red,
+                                  child: Text(
+                                    "1",
+                                    style: TextStyle(color: Colors.white, fontSize: 13.0),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ],
+                  )
                 ],
               ),
               Container(
@@ -74,7 +130,7 @@ class DetailProduct extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            mProduct.name,
+                            widget.mProduct.name,
                             style: titleDetail,
                           ),
                           Container(
@@ -120,7 +176,8 @@ class DetailProduct extends StatelessWidget {
                                   children: [
                                     RaisedButton(
                                       onPressed: () {
-                                        prdVM.onIncrement(double.parse(mProduct.price));
+                                        controller.forward(from: 0.0);
+                                        prdVM.onIncrement(double.parse(widget.mProduct.price));
                                       },
                                       color: PRICE_COLOR,
                                       textColor: Colors.white,
@@ -142,7 +199,8 @@ class DetailProduct extends StatelessWidget {
                                     ),
                                     MaterialButton(
                                       onPressed: () {
-                                        prdVM.onDecrease(double.parse(mProduct.price));
+                                        controller.forward(from: 0.0);
+                                        prdVM.onDecrease(double.parse(widget.mProduct.price));
                                       },
                                       color: BASE_APP_COLOR,
                                       textColor: Colors.white,
@@ -183,14 +241,15 @@ class DetailProduct extends StatelessWidget {
                                   ),
                                 )
                             ),
-                          ),
-                          Padding(
-                            padding:EdgeInsets.only(left: 16.0),
-                            child: Text(
-                              "${prdVM.totalPrice} VND",
-                              style: priceDetail,
+                          ),AnimatedBuilder(
+                                animation: offsetAnimation,
+                                builder: (buildContext, child) {
+                                  return Container(
+                                    padding: EdgeInsets.only(left: 16.0,top: offsetAnimation.value + 5.0, bottom: 5.0 - offsetAnimation.value),
+                                    child: Text( "${prdVM.totalPrice} VND", style: priceDetail, ),
+                                  );
+                                },
                             ),
-                          ),
                         ],
                       )
                     ],
@@ -202,4 +261,20 @@ class DetailProduct extends StatelessWidget {
         )
     );
   }
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => Cart(showClose: true),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
 }
+

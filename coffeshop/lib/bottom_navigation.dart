@@ -26,7 +26,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           children: [
             Home(),
             OrderList(),
-            Cart(),
+            Cart(showClose: false),
             Profile()
           ],
           index: currentIndex,
@@ -53,7 +53,28 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 items: [
                   BottomNavigationBarItem(icon: Icon(Icons.home),title: Text("")),
                   BottomNavigationBarItem(icon: Icon(Icons.motorcycle_outlined),title: Text("")),
-                  BottomNavigationBarItem(icon: Icon(Icons.shopping_cart),title: Text("")),
+                  BottomNavigationBarItem(icon: Stack(
+                    alignment: AlignmentDirectional(4.0, -5.0),
+                    children: <Widget>[
+                      Icon(
+                        Icons.shopping_cart,
+                        size: 20.0,
+                      ),
+                       CircleAvatar(
+                        radius: 8,
+                        backgroundColor: Colors.redAccent,
+                        child: Text(
+                          "1",
+                          style: TextStyle(fontSize: 13.0, color: Colors.white,fontWeight: FontWeight.w500),
+                        ),
+                      )
+                      //      :Icon(
+                      //   Icons.shopping_cart,
+                      //   size: 20.0,
+                      //   color: Colors.transparent,
+                      // ),
+                    ],
+                  ),title: Text("")),
                   BottomNavigationBarItem(icon: Icon(Icons.account_circle),title: Text("")),
                 ],
               ),
