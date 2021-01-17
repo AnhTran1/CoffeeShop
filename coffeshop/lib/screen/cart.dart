@@ -35,6 +35,9 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     final cartVm = Provider.of<CartModel>(context);
+    if(cartVm.changePrice){
+      controller.forward(from: 0.0);
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: BASE_APP_COLOR,
@@ -69,6 +72,7 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
                 value: cartVm.selectAll,
                 onChanged: (bool value) {
                   cartVm.onSelectAll(value);
+                  controller.forward(from: 0.0);
                 },
                 activeColor: PRICE_COLOR,
                 focusColor: Colors.red,

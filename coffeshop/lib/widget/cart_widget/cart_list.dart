@@ -135,7 +135,7 @@ class CartList extends StatelessWidget {
                                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                       ),
                                       Text(
-                                          cartList[index].quantity > 10 ? cartList[index].quantity : "0${cartList[index].quantity}" ,
+                                          cartList[index].quantity > 10 ? "${cartList[index].quantity}" : "0${cartList[index].quantity}" ,
                                           textScaleFactor: 1.1,
                                           style: TextStyle(
                                             color: WHITE_COLOR,

@@ -6,6 +6,7 @@ class CartModel extends ChangeNotifier {
   List<MCart> cartList = new List();
   double totalPrice = 0.0;
   bool selectAll = false;
+  bool changePrice = false;
   void getCart() {
     cartList = ProductList().arr.map((value) => MCart.fromJson(value)).toList();
     notifyListeners();
@@ -55,9 +56,16 @@ class CartModel extends ChangeNotifier {
       }
     });
     totalPrice = arr.fold(0, (p, c) => p + c);
+    onChangePrice();
   }
   onSetPriceQuantity(index){
     cartList[index].priceQuantity  = cartList[index].quantity.toDouble() * double.parse(cartList[index].price);
     notifyListeners();
+  }
+  onChangePrice(){
+    changePrice = true;
+    Future.delayed(Duration(milliseconds: 10),(){
+      changePrice = false;
+    });
   }
 }
