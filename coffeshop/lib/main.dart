@@ -1,4 +1,5 @@
 import 'package:coffeshop/bottom_navigation.dart';
+import 'package:coffeshop/login.dart';
 import 'package:coffeshop/notifier/product_detail_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home:  BottomNavigation(),
+      home:Login(),
     );
   }
 }
