@@ -1,7 +1,7 @@
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/screen/cart.dart';
 import 'package:coffeshop/screen/home.dart';
-import 'package:coffeshop/screen/order_list.dart';
+import 'package:coffeshop/screen/order_status.dart';
 import 'package:coffeshop/screen/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         body: IndexedStack(
           children: [
             Home(),
-            OrderList(),
+            OrderStatus(),
             Cart(showClose: false),
             Profile()
           ],
@@ -52,7 +52,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 },
                 items: [
                   BottomNavigationBarItem(icon: Icon(Icons.home),title: Text("")),
-                  BottomNavigationBarItem(icon: Icon(Icons.motorcycle_outlined),title: Text("")),
+                  BottomNavigationBarItem(icon: Icon(Icons.drive_eta),title: Text("")),
                   BottomNavigationBarItem(icon: Stack(
                     alignment: AlignmentDirectional(4.0, -5.0),
                     children: <Widget>[

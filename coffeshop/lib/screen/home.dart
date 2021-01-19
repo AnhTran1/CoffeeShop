@@ -32,57 +32,58 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.0),
-        child: Theme(
-          data: new ThemeData(
-              highlightColor: Colors.transparent,
-              splashColor:Colors.grey.withOpacity(0.05),
-          ),
-          child: AppBar(
-            backgroundColor: BASE_APP_COLOR,
-            centerTitle: false,
-            title: Text("Coffee",style: appbarHome),
-            actions: <Widget>[
-              InkWell(
-                  onTap: () {
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 15.0),
-                    child:IconButton(
-                        onPressed: null,
-                        icon: Icon(
-                          Icons.event,
-                          color: WHITE_COLOR,
-                        )),
-                  )),
-            ],
-            bottom: TabBar(
-              tabs: tabs,
-              controller: tabController,
-              indicatorColor: WHITE_COLOR,
-              labelStyle: tabBarHome,
-              unselectedLabelStyle:tabBarHome,
-              labelColor: WHITE_COLOR,
-              unselectedLabelColor:TAB_COLOR,
-              indicatorPadding: EdgeInsets.only(left: 16.0,right: 16,bottom: 0),
-              indicatorSize: TabBarIndicatorSize.label,
-              labelPadding: EdgeInsets.only(left: 8.0,right: 8,bottom: 0),
+    return DefaultTabController(
+      length: categoryList.length,
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(100.0),
+            child: Theme(
+              data: new ThemeData(
+                  highlightColor: Colors.transparent,
+                  splashColor:Colors.grey.withOpacity(0.05),
+              ),
+              child: AppBar(
+                backgroundColor: BASE_APP_COLOR,
+                centerTitle: false,
+                title: Text("Coffee",style: appbarHome),
+                actions: <Widget>[
+                  InkWell(
+                      onTap: () {
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 15.0),
+                        child:IconButton(
+                            onPressed: null,
+                            icon: Icon(
+                              Icons.event,
+                              color: WHITE_COLOR,
+                            )),
+                      )),
+                ],
+                bottom: TabBar(
+                  tabs: tabs,
+                  controller: tabController,
+                  isScrollable: true,
+                  indicatorColor: WHITE_COLOR,
+                  labelStyle: tabBarHome,
+                  unselectedLabelStyle:tabBarHome,
+                  labelColor: WHITE_COLOR,
+                  unselectedLabelColor:TAB_COLOR,
+                  indicatorPadding: EdgeInsets.only(left: 16.0,right: 16,bottom: 0),
+                  indicatorSize: TabBarIndicatorSize.label,
+                  labelPadding: EdgeInsets.only(bottom: 0,left: 16.0,right: 16.0),
+                ),
+              ),
             ),
           ),
+          body:  TabBarView(
+                children: tabBody,
+                physics: BouncingScrollPhysics(),
+                controller: tabController,
+          ),
         ),
-      ),
-      body: DefaultTabController(
-        length: categoryList.length,
-        child: MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-          child: TabBarView(
-            children: tabBody,
-            physics: BouncingScrollPhysics(),
-            controller: tabController,
-          )
-        ) ,
       ),
     );
   }

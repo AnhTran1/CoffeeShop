@@ -19,6 +19,7 @@ class _CoffeeState extends State<Coffee> {
     getData();
     super.initState();
   }
+
   getData(){
     var pVM = Provider.of<ProductModel>(context,listen: false);
     Future.delayed(Duration(milliseconds: 50),(){
@@ -56,6 +57,7 @@ class _CoffeeState extends State<Coffee> {
     return Scaffold(
         backgroundColor: WHITE_COLOR,
         body:SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.all(10),
           child: ItemProduct(product: pVM.productList),
         )
