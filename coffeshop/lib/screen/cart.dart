@@ -1,5 +1,6 @@
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/notifier/cart_notifier.dart';
+import 'package:coffeshop/screen/order_detail.dart';
 import 'package:coffeshop/widget/cart_widget/cart_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -102,7 +103,10 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
                   Expanded(
                     child: RaisedButton(
                         onPressed: (){
-
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => OrderDetail()),
+                          );
                         },
                         color: PRICE_COLOR,
                         disabledColor: PRICE_COLOR,
