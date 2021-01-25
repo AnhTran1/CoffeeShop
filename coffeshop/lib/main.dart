@@ -1,6 +1,6 @@
-import 'package:coffeshop/bottom_navigation.dart';
-import 'package:coffeshop/login.dart';
 import 'package:coffeshop/notifier/product_detail_notifier.dart';
+import 'package:coffeshop/notifier/user_notifier.dart';
+import 'package:coffeshop/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +18,7 @@ void main() {
           ChangeNotifierProvider(create: (context) => ProductDetailModel()),
           ChangeNotifierProvider(create: (context) => ProductModel()),
           ChangeNotifierProvider(create: (context) => CartModel()),
+          ChangeNotifierProvider(create: (context) => UserModel()),
         ],
         child: MyApp(),
       ),
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home:Login(),
+      home:Splash(),
     );
   }
 }

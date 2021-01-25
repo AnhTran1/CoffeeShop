@@ -39,6 +39,7 @@ dependencies:
   carousel_slider: ^2.3.1
   cached_network_image: ^2.4.1
   flutter_staggered_grid_view: ^0.3.3
+  rounded_loading_button: ^1.0.18
 dev_dependencies:
   flutter_test:
     sdk: flutter

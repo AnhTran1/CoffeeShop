@@ -3,6 +3,7 @@ import 'package:coffeshop/notifier/product_detail_notifier.dart';
 import 'package:coffeshop/notifier/product_notifier.dart';
 import 'package:coffeshop/widget/home_widget/item_product.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 enum CATEGORY  {COFFEE,TEA,CHOCOLATE,FOOD}
 class Coffee extends StatefulWidget {
@@ -56,11 +57,23 @@ class _CoffeeState extends State<Coffee> {
     final pVM = Provider.of<ProductModel>(context);
     return Scaffold(
         backgroundColor: WHITE_COLOR,
-        body:SingleChildScrollView(
+        body: pVM.productList != null ? SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.all(10),
-          child: ItemProduct(product: pVM.productList),
-        )
+          child: StaggeredGridView.countBuilder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              crossAxisCount: 4,
+              padding: EdgeInsets.only(top:0.0),
+              itemCount: pVM.productList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ItemProduct(product:pVM.productList[index]);
+              },
+              staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
+              mainAxisSpacing: 10.0,
+              crossAxisSpacing: 10.0
+          )
+        ) : SizedBox()
     );
   }
 }
