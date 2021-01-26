@@ -22,7 +22,7 @@ class _SplashState extends State<Splash> {
   }
   void navigatorPage() async {
     String token = await StorageManager.readData("token");
-    if (token == null) {
+    if (token != null) {
       Navigator.of(context).pushReplacement(PageRouteBuilder(pageBuilder: (_, __, ___) => Login()));
     } else {
       Navigator.of(context).pushReplacement( PageRouteBuilder(pageBuilder: (_, __, ___) => BottomNavigation()));

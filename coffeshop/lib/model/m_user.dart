@@ -5,6 +5,8 @@ class MUser {
     this.email,
     this.apiToken,
     this.emailVerifiedAt,
+    this.passWord,
+    this.conFirmPassword,
   });
 
   int id;
@@ -12,6 +14,8 @@ class MUser {
   String email;
   String apiToken;
   dynamic emailVerifiedAt;
+  String passWord;
+  String conFirmPassword;
 
   factory MUser.fromJson(Map<String, dynamic> json) => MUser(
     id: json["id"] == null ? null : json["id"],
