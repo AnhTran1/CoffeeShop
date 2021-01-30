@@ -7,7 +7,6 @@ import 'package:coffeshop/model/m_product.dart';
 import 'package:coffeshop/notifier/product_detail_notifier.dart';
 import 'package:coffeshop/screen/detail_product.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 // ignore: must_be_immutable
 class ItemProduct extends StatelessWidget {

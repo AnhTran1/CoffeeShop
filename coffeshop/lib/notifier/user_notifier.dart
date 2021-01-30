@@ -16,6 +16,12 @@ class UserModel extends ChangeNotifier {
   bool onTapLogin = false;
 
   MUser mUser;
+  Future signOut() async{
+    mUser = null;
+    await StorageManager.deleteData("user");
+    await StorageManager.deleteData("token");
+    notifyListeners();
+  }
   void setOnTapLogin(value) async{
     onTapLogin = value;
     await Future.delayed(Duration(milliseconds: 50),(){
@@ -24,8 +30,12 @@ class UserModel extends ChangeNotifier {
     notifyListeners();
   }
   void getUser() async{
-    mUser = MUser.fromJson(json.decode(await StorageManager.readData("user")));
-    StorageManager.saveData("token", mUser.apiToken);
+    if(await StorageManager.readData("user") != null) {
+      mUser = MUser.fromJson(json.decode(await StorageManager.readData("user")));
+      if(await StorageManager.readData("token") == null){
+        StorageManager.saveData("token", mUser.apiToken);
+      }
+    }
     notifyListeners();
   }
   void onChangeForm(int type, value){

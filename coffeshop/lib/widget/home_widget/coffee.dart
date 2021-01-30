@@ -5,10 +5,10 @@ import 'package:coffeshop/widget/home_widget/item_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
-enum CATEGORY  {COFFEE,TEA,CHOCOLATE,FOOD}
+
 class Coffee extends StatefulWidget {
-  CATEGORY category;
-  Coffee({this.category});
+  String categoryName;
+  Coffee({this.categoryName});
   @override
   _CoffeeState createState() => _CoffeeState();
 }
@@ -16,41 +16,17 @@ class Coffee extends StatefulWidget {
 class _CoffeeState extends State<Coffee> {
   @override
   void initState() {
-    setCategory();
-    getData();
+    initData();
     super.initState();
   }
 
-  getData(){
+  initData() async{
+    var prdVM = Provider.of<ProductDetailModel>(context,listen: false);
     var pVM = Provider.of<ProductModel>(context,listen: false);
-    Future.delayed(Duration(milliseconds: 50),(){
+    await Future.delayed(Duration(milliseconds: 350),(){
+      prdVM.setCategory(this.widget.categoryName);
       pVM.getProduct();
     });
-  }
-  void setCategory(){
-    var prdVM = Provider.of<ProductDetailModel>(context,listen: false);
-    switch(widget.category){
-      case CATEGORY.COFFEE:
-        Future.delayed(Duration(milliseconds: 50),(){
-          prdVM.setCategory("Coffee");
-        });
-        break;
-      case CATEGORY.TEA:
-        Future.delayed(Duration(milliseconds: 50),(){
-          prdVM.setCategory("Tea");
-        });
-      break;
-      case CATEGORY.CHOCOLATE:
-        Future.delayed(Duration(milliseconds: 50),(){
-          prdVM.setCategory("Chocolate");
-        });
-        break;
-      case CATEGORY.FOOD:
-        Future.delayed(Duration(milliseconds: 50),(){
-          prdVM.setCategory("Food");
-        });
-        break;
-    }
   }
   @override
   Widget build(BuildContext context) {

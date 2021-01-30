@@ -22,8 +22,7 @@ class APIManager {
   Future<MResults> callApi(String url,List<Map<String,dynamic>> field) async {
     var responseJson;
     var request;
-    MResults mResult;
-    mResult = MResults(loading: true,loaded: false,loadMore: false,loadFailed: false,message: "",data: null);
+    MResults mResult = MResults(loading: true,loaded: false,loadMore: false,loadFailed: false,message: "",data: null);
     switch(this.request){
       case REQUEST.POST:
         request = new http.MultipartRequest("POST", Uri.parse(hosts + url));
@@ -40,9 +39,11 @@ class APIManager {
     }
     request.headers.addAll(await  headers());
     await Future.delayed(Duration.zero,(){
-      field.forEach((element) {
-        request.fields['${element.keys.first}'] = '${element.values.last}';
-      });
+      if(field != null){
+        field.forEach((element) {
+          request.fields['${element.keys.first}'] = '${element.values.last}';
+        });
+      }
     });
     try {
       http.Response response = await http.Response.fromStream(await request.send());

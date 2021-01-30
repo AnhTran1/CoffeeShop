@@ -39,7 +39,7 @@ class _LoginState extends State<Login> {
               FocusScope.of(context).requestFocus(new FocusNode());
             },
             child: ClipRect(
-              child: Image.asset('assets/image/background_login.jpg',width: Utils.width(context),height: Utils.height(context),fit: BoxFit.fill),
+              child: Image.asset('assets/images/background_login.jpg',width: Utils.width(context),height: Utils.height(context),fit: BoxFit.fill),
             ),
           ),
           SingleChildScrollView(

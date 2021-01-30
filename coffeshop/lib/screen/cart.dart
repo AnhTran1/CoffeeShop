@@ -112,12 +112,12 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
                         disabledColor: PRICE_COLOR,
                         padding: EdgeInsets.only(top: 10.0,bottom: 10.0),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(7.0),
                         ),
                         child:Text(
                           "Order Now",
                           style: TextStyle(
-                              color: TAB_COLOR,
+                              color: WHITE_COLOR,
                               fontWeight: FontWeight.w700,
                               fontSize: 16.0
                           ),

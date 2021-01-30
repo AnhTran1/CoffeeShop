@@ -1,3 +1,4 @@
+import 'package:coffeshop/common/animation/spl/animation_screen.dart';
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/screen/cart.dart';
 import 'package:coffeshop/screen/home.dart';
@@ -20,72 +21,80 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      child: Scaffold(
-        body: IndexedStack(
-          children: [
-            Home(),
-            OrderStatus(),
-            Cart(showClose: false),
-            Profile()
-          ],
-          index: currentIndex,
-        ),
-        bottomNavigationBar: Theme(
-            data: Theme.of(context).copyWith(
-                canvasColor: BASE_APP_COLOR,
-                splashColor: Colors.grey.withOpacity(0.1),
-                highlightColor: Colors.transparent,
-                textTheme: Theme.of(context).textTheme.copyWith(caption: TextStyle(color: Colors.black26.withOpacity(0.15)))),
-            child: Container(
-              height: MediaQuery.of(context).padding.bottom + 60.0,
-              child: BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                mouseCursor: MouseCursor.defer,
-                currentIndex: currentIndex,
-                selectedItemColor: WHITE_COLOR,
-                unselectedItemColor: TAB_COLOR,
-                onTap: (value) {
-                  setState(() {
-                    currentIndex = value;
-                  });
-                },
-                items: [
-                  BottomNavigationBarItem(icon: Icon(Icons.home),title: Text("")),
-                  BottomNavigationBarItem(icon: Icon(Icons.drive_eta),title: Text("")),
-                  BottomNavigationBarItem(icon: Stack(
-                    alignment: AlignmentDirectional(4.0, -5.0),
-                    children: <Widget>[
-                      Icon(
-                        Icons.shopping_cart,
-                        size: 20.0,
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: Stack(
+            children: <Widget>[
+              Scaffold(
+                body: IndexedStack(
+                  children: [
+                    Home(),
+                    OrderStatus(),
+                    Cart(showClose: false),
+                    Profile()
+                  ],
+                  index: currentIndex,
+                ),
+                bottomNavigationBar: Theme(
+                    data: Theme.of(context).copyWith(
+                        canvasColor: BASE_APP_COLOR,
+                        splashColor: Colors.grey.withOpacity(0.1),
+                        highlightColor: Colors.transparent,
+                        textTheme: Theme.of(context).textTheme.copyWith(caption: TextStyle(color: Colors.black26.withOpacity(0.15)))),
+                    child: Container(
+                      height: MediaQuery.of(context).padding.bottom + 60.0,
+                      child: BottomNavigationBar(
+                        type: BottomNavigationBarType.fixed,
+                        mouseCursor: MouseCursor.defer,
+                        currentIndex: currentIndex,
+                        selectedItemColor: WHITE_COLOR,
+                        unselectedItemColor: TAB_COLOR,
+                        onTap: (value) {
+                          setState(() {
+                            currentIndex = value;
+                          });
+                        },
+                        items: [
+                          BottomNavigationBarItem(icon: Icon(Icons.home),title: Text("")),
+                          BottomNavigationBarItem(icon: Icon(Icons.drive_eta),title: Text("")),
+                          BottomNavigationBarItem(icon: Stack(
+                            alignment: AlignmentDirectional(4.0, -5.0),
+                            children: <Widget>[
+                              Icon(
+                                Icons.shopping_cart,
+                                size: 20.0,
+                              ),
+                              CircleAvatar(
+                                radius: 8,
+                                backgroundColor: Colors.redAccent,
+                                child: Text(
+                                  "1",
+                                  style: TextStyle(fontSize: 13.0, color: Colors.white,fontWeight: FontWeight.w500),
+                                ),
+                              )
+                              //      :Icon(
+                              //   Icons.shopping_cart,
+                              //   size: 20.0,
+                              //   color: Colors.transparent,
+                              // ),
+                            ],
+                          ),title: Text("")),
+                          BottomNavigationBarItem(icon: Icon(Icons.account_circle),title: Text("")),
+                        ],
                       ),
-                       CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.redAccent,
-                        child: Text(
-                          "1",
-                          style: TextStyle(fontSize: 13.0, color: Colors.white,fontWeight: FontWeight.w500),
-                        ),
-                      )
-                      //      :Icon(
-                      //   Icons.shopping_cart,
-                      //   size: 20.0,
-                      //   color: Colors.transparent,
-                      // ),
-                    ],
-                  ),title: Text("")),
-                  BottomNavigationBarItem(icon: Icon(Icons.account_circle),title: Text("")),
-                ],
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          )),
+                    )),
               ),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  )),
-            )),
-      ),
-
+              IgnorePointer(
+                  child: AnimationScreen(
+                      color: Colors.brown
+                  )
+              )
+            ]
+        )
     );
   }
 }
