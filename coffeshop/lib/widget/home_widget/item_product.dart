@@ -17,11 +17,11 @@ class ItemProduct extends StatelessWidget {
     final prdVM = Provider.of<ProductDetailModel>(context);
     return InkWell(
       onTap: (){
-        prdVM.initData(double.parse(product.price));
+        prdVM.initData(product.price.toDouble());
         Navigator.push(
           context,
           PageRouteBuilder(
-            pageBuilder: (c, a1, a2) => DetailProduct(mProduct: product),
+            pageBuilder: (c, a1, a2) => DetailProduct(mProductData: product),
             transitionsBuilder: (c, anim, a2, child) => FadeTransition(opacity: anim, child: child),
             transitionDuration: Duration(milliseconds: 350),
           ),
@@ -39,11 +39,11 @@ class ItemProduct extends StatelessWidget {
               children: [
                 SizedBox(
                   child: Hero(
-                    tag: product.imgUrl,
+                    tag: product.id.toString()  + product.name,
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(7.0)),
                       child: CachedNetworkImage(
-                        imageUrl: product.imgUrl,
+                        imageUrl: product.fileImage != null ? product.fileImage : noImage1,
                         placeholder: (context, url) =>  Image.asset(image_placeholder,fit: BoxFit.cover,height: 200),
                         errorWidget: (context, url, error) => Image.asset(image_placeholder,fit: BoxFit.cover,height: 200),
                         fit: BoxFit.cover,
@@ -86,7 +86,7 @@ class ItemProduct extends StatelessWidget {
                   Text(product.name,style: title),
                   Padding(
                       padding: EdgeInsets.only(top: 5.0),
-                      child: Text(product.price,style: price)),
+                      child: Text("${product.price}",style: price)),
                 ],
               ),
             )

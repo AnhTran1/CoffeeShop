@@ -10,9 +10,10 @@ import 'package:provider/provider.dart';
 
 import '../common/Utils.dart';
 import '../common/styles.dart';
+// ignore: must_be_immutable
 class DetailProduct extends StatefulWidget {
-  MProduct mProduct;
-  DetailProduct({this.mProduct});
+  MProduct mProductData;
+  DetailProduct({this.mProductData});
   @override
   _DetailProductState createState() => _DetailProductState();
 }
@@ -50,12 +51,12 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                   Column(
                     children: [
                       Hero(
-                        tag: widget.mProduct.imgUrl,
+                        tag: widget.mProductData.id.toString() + widget.mProductData.name,
                         child: SizedBox(
                           height: (Utils.height(context) / 3) + 50,
                           width: Utils.width(context),
                           child: CachedNetworkImage(
-                            imageUrl: widget.mProduct.imgUrl,
+                            imageUrl: widget.mProductData.fileImage,
                             placeholder: (context, url) =>  Image.asset(image_placeholder,fit: BoxFit.cover,),
                             errorWidget: (context, url, error) => Image.asset(image_placeholder,fit: BoxFit.cover),
                             fit: BoxFit.cover,
@@ -130,7 +131,7 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.mProduct.name,
+                            widget.mProductData.name,
                             style: titleDetail,
                           ),
                           Container(
@@ -177,7 +178,7 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                                     RaisedButton(
                                       onPressed: () {
                                         controller.forward(from: 0.0);
-                                        prdVM.onIncrement(double.parse(widget.mProduct.price));
+                                        prdVM.onIncrement(widget.mProductData.price.toDouble());
                                       },
                                       color: PRICE_COLOR,
                                       textColor: Colors.white,
@@ -200,7 +201,7 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                                     MaterialButton(
                                       onPressed: () {
                                         controller.forward(from: 0.0);
-                                        prdVM.onDecrease(double.parse(widget.mProduct.price));
+                                        prdVM.onDecrease(widget.mProductData.price.toDouble());
                                       },
                                       color: BASE_APP_COLOR,
                                       textColor: Colors.white,

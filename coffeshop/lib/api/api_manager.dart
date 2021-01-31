@@ -1,4 +1,5 @@
 import 'package:coffeshop/api/api_exception.dart';
+import 'package:coffeshop/common/storage_manager.dart';
 import 'package:coffeshop/model/m_results.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
@@ -14,7 +15,7 @@ class APIManager {
     var header = {
       "Accept": "application/json",
       'Content-type': 'application/json',
-      "Authorization": ""
+      "Authorization": "${await StorageManager.readData("token") != null ? "${await StorageManager.readData("token")}" : ""}"
     };
     return header;
   }

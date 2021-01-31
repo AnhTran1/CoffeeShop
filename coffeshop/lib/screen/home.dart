@@ -1,7 +1,8 @@
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/notifier/product_notifier.dart';
+import 'package:coffeshop/notifier/user_notifier.dart';
 import 'package:coffeshop/widget/error_widget/error_screen.dart';
-import 'package:coffeshop/widget/home_widget/coffee.dart';
+import 'package:coffeshop/widget/home_widget/product_by_cate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,8 +27,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
       tabController = TabController(vsync: this, length: pVM.mCategory.data.length);
       pVM.mCategory.data.forEach((element) {
         tabs.add(_customTab(element.name));
-        tabBody.add(Coffee(categoryName: element.name));
+        tabBody.add(ProductByCate(categoryName: element.name,cateId:element.id.toString()));
       });
+    } else {
+      tabController = TabController(vsync: this, length:0);
     }
   }
   @override
@@ -61,8 +64,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
                           )),
                     )),
               ],
-              bottom: tabs.length > 0 ? TabBar(
-                tabs: tabs,
+              bottom: TabBar(
+                tabs:tabs.length > 0 ? tabs : [] ,
                 controller: tabController,
                 isScrollable: true,
                 indicatorColor: WHITE_COLOR,
@@ -73,11 +76,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
                 indicatorPadding: EdgeInsets.only(left: 16.0,right: 16,bottom: 0),
                 indicatorSize: TabBarIndicatorSize.label,
                 labelPadding: EdgeInsets.only(bottom: 0,left: 16.0,right: 16.0),
-              ) : SizedBox(),
+              )
             ),
           ),
         ),
-        body: pVM.mCategory != null && tabs.length > 10 ? DefaultTabController(
+        body: pVM.mCategory != null && tabs.length > 0 ? DefaultTabController(
           length: pVM.mCategory.data.length,
           child: TabBarView(
             children: tabBody,
@@ -85,8 +88,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
             controller: tabController,
           ),
         ) : ErrorScreen(
-          callbackRetry: (){
-            print("ok");
+          message: null,
+          callbackRetry: () async{
           },
         ),
       ),

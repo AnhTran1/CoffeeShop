@@ -1,7 +1,9 @@
+import 'package:coffeshop/common/animation/animation_counter/AnimationCounter.dart';
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/notifier/cart_notifier.dart';
 import 'package:coffeshop/screen/order_detail.dart';
 import 'package:coffeshop/widget/cart_widget/cart_list.dart';
+import 'package:coffeshop/widget/error_widget/error_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,9 +29,9 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
       });
     super.initState();
   }
-  getData(){
-    var cartVm = Provider.of<CartModel>(context,listen: false);
-    Future.delayed(Duration(milliseconds: 50),(){
+  void getData() async{
+    await  Future.delayed(Duration(milliseconds: 450),(){
+      var cartVm = Provider.of<CartModel>(context,listen: false);
       cartVm.getCart();
     });
   }
@@ -50,7 +52,7 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
           onPressed: () => Navigator.of(context).pop(),
         ) : null,
         actions: [
-          Container(
+          cartVm.mCart != null && cartVm.mCart.data.length > 0 ? Container(
             margin: EdgeInsets.only(right: 10.0),
             alignment: Alignment.center,
             child: Text(
@@ -61,8 +63,8 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
               fontSize: 13.0,
             ),
             ),
-          ),
-          SizedBox(
+          ) : SizedBox(),
+          cartVm.mCart != null && cartVm.mCart.data.length > 0 ? SizedBox(
             width:20.0,
             height: 20.0,
             child: Theme(
@@ -79,7 +81,7 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
                 focusColor: Colors.red,
               ),
             ),
-          ),
+          ) : SizedBox(),
           SizedBox(width: 20.0)
         ],
       ),
@@ -89,10 +91,13 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(10.0),
-                child: CartList(cartList: cartVm.cartList),
-              ),
+              child:cartVm.mCartResult.loading != true && cartVm.mCartResult.loaded ? SingleChildScrollView(
+                child: CartList()) :  ErrorScreen(
+                  message: cartVm.mCartResult.message,
+                  callbackRetry: (){
+
+                  },
+              ) ,
             ),
             Container(
               color: BASE_APP_COLOR,
@@ -123,19 +128,16 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
                           ),
                         )
                     ),
-                  ),AnimatedBuilder(
-                    animation: offsetAnimation,
-                    builder: (buildContext, child) {
-                      return Container(
-                        padding: EdgeInsets.only(left: 16.0,top: offsetAnimation.value + 5.0, bottom: 5.0 - offsetAnimation.value),
-                        child: Text( "${cartVm.totalPrice} VND", style: TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18.0,
-                        )),
-                      );
-                    },
                   ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 12.0),
+                    child: AnimationCounter(
+                      duration: Duration(milliseconds: 750),
+                      value: cartVm.totalPrice.toInt(), /* pass in a number like 2014 */
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                  )
                 ],
               ),
             )

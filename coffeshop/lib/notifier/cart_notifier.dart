@@ -1,27 +1,35 @@
+import 'package:coffeshop/api/api_manager.dart';
+import 'package:coffeshop/api/api_response.dart';
 import 'package:coffeshop/common/dumy/product.dart';
 import 'package:coffeshop/model/m_cart.dart';
+import 'package:coffeshop/model/m_results.dart';
 import 'package:flutter/cupertino.dart';
 
 class CartModel extends ChangeNotifier {
-  List<MCart> cartList = new List();
+  MResults mCartResult = MResults(loading: true,loaded: false,loadFailed: false,loadMore: false,message: "",data: null);
+  MCart mCart;
   double totalPrice = 0.0;
   bool selectAll = false;
   bool changePrice = false;
-  void getCart() {
-    cartList = ProductList().arr.map((value) => MCart.fromJson(value)).toList();
+  void getCart() async{
+    mCartResult = await ApiResponse.getListCart();
+    if(mCartResult.data != null){
+      mCart = MCart.fromJson(mCartResult.data);
+    }
+    // cartList = ProductList().arr.map((value) => MCart.fromJson(value)).toList();
     notifyListeners();
   }
   onSelectAll(value){
-    if(cartList != null && cartList.length > 0){
+    if(mCart != null && mCart.data.length > 0){
       if(selectAll) {
         selectAll = value;
-        cartList.forEach((element) {
+        mCart.data.forEach((element) {
           element.isCheck = false;
         });
       }
       else {
         selectAll = value;
-        cartList.forEach((element) {
+        mCart.data.forEach((element) {
           element.isCheck = true;
         });
       }
@@ -30,36 +38,46 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
   onSelectItem(value,index){
-    cartList[index].isCheck = value;
+    mCart.data[index].isCheck = value;
     onTotalPrice();
     notifyListeners();
   }
   onIncrementQtt(index){
-    cartList[index].quantity += 1;
+    mCart.data[index].quantity += 1;
     onSetPriceQuantity(index);
     onTotalPrice();
     notifyListeners();
   }
   onDecreaseQtt(index){
-    if(cartList[index].quantity > 1){
-      cartList[index].quantity -= 1;
+    if(mCart.data[index].quantity > 1){
+      mCart.data[index].quantity -= 1;
     }
     onSetPriceQuantity(index);
     onTotalPrice();
     notifyListeners();
   }
-  onTotalPrice(){
+  onTotalPrice() async{
     var arr = [];
-    cartList.forEach((element) {
-      if(element.isCheck){
-        arr.add(element.quantity.toDouble() * double.parse(element.price));
-      }
+    var arrChecks = [];
+    await Future.delayed(Duration.zero,(){
+      mCart.data.forEach((element) {
+        if(element.isCheck){
+          arr.add(element.quantity * element.price);
+          arrChecks.add(element.isCheck);
+        }
+      });
     });
+    if(arrChecks.length != mCart.data.length){
+      selectAll = false;
+    }else {
+      selectAll = true;
+    }
     totalPrice = arr.fold(0, (p, c) => p + c);
     onChangePrice();
+    notifyListeners();
   }
   onSetPriceQuantity(index){
-    cartList[index].priceQuantity  = cartList[index].quantity.toDouble() * double.parse(cartList[index].price);
+    mCart.data[index].priceQuantity  = mCart.data[index].quantity * mCart.data[index].price;
     notifyListeners();
   }
   onChangePrice(){
@@ -67,5 +85,6 @@ class CartModel extends ChangeNotifier {
     Future.delayed(Duration(milliseconds: 10),(){
       changePrice = false;
     });
+    notifyListeners();
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:coffeshop/api/api_response.dart';
@@ -9,7 +10,9 @@ import 'package:flutter/cupertino.dart';
 
 class ProductModel extends ChangeNotifier {
   MCategory mCategory;
-  List<MProduct> productList = new List();
+  MResults mProductResult = MResults(loading: true,loaded: false,loadFailed: false,loadMore: false,message: "",data: null);
+  HashMap<String, List<MProduct>> mProductList;
+  HashMap productList = new HashMap<String, List<MProduct>>();
 
   Future getCategory() async{
     MResults mResults;
@@ -20,9 +23,12 @@ class ProductModel extends ChangeNotifier {
     notifyListeners();
     return mResults;
   }
-  void getProduct() {
-    if(productList.length == 0){
-      productList = ProductList().arr.map((value) => MProduct.fromJson(value)).toList();
+  void getProduct({String cateId, int page}) async{
+    mProductResult = await ApiResponse.getCategory();
+    if(mProductResult.loaded && mProductResult.data != null){
+        var jsonList = jsonDecode(jsonEncode(mProductResult.data))["data"] as List;
+        productList[cateId] = jsonList.map((i) => MProduct.fromJson(i)).toList();
+        mProductList = productList;
     }
     notifyListeners();
   }

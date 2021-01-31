@@ -1,19 +1,24 @@
+import 'package:coffeshop/common/Utils.dart';
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/notifier/product_detail_notifier.dart';
 import 'package:coffeshop/notifier/product_notifier.dart';
+import 'package:coffeshop/widget/error_widget/error_screen.dart';
 import 'package:coffeshop/widget/home_widget/item_product.dart';
+import 'package:coffeshop/widget/loading/circular_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
-class Coffee extends StatefulWidget {
+// ignore: must_be_immutable
+class ProductByCate extends StatefulWidget {
   String categoryName;
-  Coffee({this.categoryName});
+  String cateId;
+  ProductByCate({this.categoryName,this.cateId});
   @override
-  _CoffeeState createState() => _CoffeeState();
+  _ProductByCateState createState() => _ProductByCateState();
 }
 
-class _CoffeeState extends State<Coffee> {
+class _ProductByCateState extends State<ProductByCate> {
   @override
   void initState() {
     initData();
@@ -25,15 +30,22 @@ class _CoffeeState extends State<Coffee> {
     var pVM = Provider.of<ProductModel>(context,listen: false);
     await Future.delayed(Duration(milliseconds: 350),(){
       prdVM.setCategory(this.widget.categoryName);
-      pVM.getProduct();
+      pVM.getProduct(cateId: widget.cateId,page: 1);
     });
   }
   @override
   Widget build(BuildContext context) {
     final pVM = Provider.of<ProductModel>(context);
+    if(pVM.mProductResult.loading){
+        return CircularLoading();
+    } else if(pVM.mProductResult.loaded){
+
+    } else if(pVM.mProductResult.loadFailed){
+        return ErrorScreen();
+    }
     return Scaffold(
         backgroundColor: WHITE_COLOR,
-        body: pVM.productList != null ? SingleChildScrollView(
+        body: pVM.mProductList[widget.cateId] != null && pVM.mProductList[widget.cateId].length > 0 ? SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.all(10),
           child: StaggeredGridView.countBuilder(
@@ -41,9 +53,9 @@ class _CoffeeState extends State<Coffee> {
               shrinkWrap: true,
               crossAxisCount: 4,
               padding: EdgeInsets.only(top:0.0),
-              itemCount: pVM.productList.length,
+              itemCount: pVM.mProductList[widget.cateId].length,
               itemBuilder: (BuildContext context, int index) {
-                return ItemProduct(product:pVM.productList[index]);
+                return ItemProduct(product:pVM.mProductList[widget.cateId][index]);
               },
               staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
               mainAxisSpacing: 10.0,
