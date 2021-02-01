@@ -13,7 +13,7 @@ class ApiResponse {
   static Future<MResults> register(List<Map<String,dynamic>> field) async {
     return await APIManager(request: REQUEST.POST).callApi(ApiEndPoint.apiRegister, field);
   }
-  static Future<MResults> getProductByCate(List<Map<String,dynamic>> field) async {
+  static Future<MResults> getProductByCate({List<Map<String,dynamic>> field}) async {
     return await APIManager(request: REQUEST.GET).callApi(ApiEndPoint.apiGetProductByCate, field);
   }
   static Future<MResults> getListCart({@required List<Map<String, dynamic>> field}) async {
