@@ -1,6 +1,7 @@
 import 'package:coffeshop/api/api_exception.dart';
 import 'package:coffeshop/common/storage_manager.dart';
 import 'package:coffeshop/model/m_results.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:convert';
@@ -20,7 +21,7 @@ class APIManager {
     return header;
   }
 
-  Future<MResults> callApi(String url,List<Map<String,dynamic>> field) async {
+  Future<MResults> callApi({String url, @required Map<String, dynamic> field,@required Map<String, dynamic> params}) async {
     var responseJson;
     var request;
     MResults mResult = MResults(loading: true,loaded: false,loadMore: false,loadFailed: false,message: "",data: null);
@@ -29,7 +30,7 @@ class APIManager {
         request = new http.MultipartRequest("POST", Uri.parse(hosts + url));
         break;
       case REQUEST.GET:
-        request = new http.MultipartRequest("GET", Uri.parse(hosts + url));
+        request = new http.MultipartRequest("GET", Uri.parse(hosts + url).replace(queryParameters:params));
         break;
       case REQUEST.PUT:
         request = new http.MultipartRequest("PUT", Uri.parse(hosts + url));
@@ -41,9 +42,7 @@ class APIManager {
     request.headers.addAll(await  headers());
     await Future.delayed(Duration.zero,(){
       if(field != null){
-        field.forEach((element) {
-          request.fields['${element.keys.first}'] = '${element.values.last}';
-        });
+        field.addAll(field);
       }
     });
     try {

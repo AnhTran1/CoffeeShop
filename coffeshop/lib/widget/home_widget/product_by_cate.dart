@@ -39,29 +39,31 @@ class _ProductByCateState extends State<ProductByCate> {
     if(pVM.mProductResult.loading){
         return CircularLoading();
     } else if(pVM.mProductResult.loaded){
-
+      if(pVM.mProductList[widget.cateId] != null && pVM.mProductList[widget.cateId].length > 0){
+        return SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.all(10),
+            child: StaggeredGridView.countBuilder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                crossAxisCount: 4,
+                padding: EdgeInsets.only(top:0.0),
+                itemCount: pVM.mProductList[widget.cateId].length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ItemProduct(product:pVM.mProductList[widget.cateId][index]);
+                },
+                staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
+                mainAxisSpacing: 10.0,
+                crossAxisSpacing: 10.0
+            )
+        );
+      } else {
+        return Center(
+          child: Text("Chưa có sản phẩm nào trong danh mục !",style: messageStyle),
+        );
+      }
     } else if(pVM.mProductResult.loadFailed){
         return ErrorScreen();
     }
-    return Scaffold(
-        backgroundColor: WHITE_COLOR,
-        body: pVM.mProductList[widget.cateId] != null && pVM.mProductList[widget.cateId].length > 0 ? SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.all(10),
-          child: StaggeredGridView.countBuilder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              crossAxisCount: 4,
-              padding: EdgeInsets.only(top:0.0),
-              itemCount: pVM.mProductList[widget.cateId].length,
-              itemBuilder: (BuildContext context, int index) {
-                return ItemProduct(product:pVM.mProductList[widget.cateId][index]);
-              },
-              staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
-              mainAxisSpacing: 10.0,
-              crossAxisSpacing: 10.0
-          )
-        ) : SizedBox()
-    );
   }
 }

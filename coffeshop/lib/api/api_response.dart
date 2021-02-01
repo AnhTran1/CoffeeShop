@@ -4,19 +4,19 @@ import 'package:coffeshop/model/m_results.dart';
 import 'package:flutter/material.dart';
 
 class ApiResponse {
-  static Future<MResults> getCategory({@required List<Map<String, dynamic>> field}) async {
-    return await APIManager(request: REQUEST.GET).callApi(ApiEndPoint.apiGetCategory, field);
+  static Future<MResults> getCategory() async {
+    return await APIManager(request: REQUEST.GET).callApi(url:ApiEndPoint.apiGetCategory);
   }
-  static Future<MResults> login(List<Map<String,dynamic>> field) async {
-    return await APIManager(request: REQUEST.POST).callApi(ApiEndPoint.apiLogin, field);
+  static Future<MResults> login(Map<String,dynamic> field) async {
+    return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiLogin, field: field);
   }
-  static Future<MResults> register(List<Map<String,dynamic>> field) async {
-    return await APIManager(request: REQUEST.POST).callApi(ApiEndPoint.apiRegister, field);
+  static Future<MResults> register(Map<String,dynamic> field) async {
+    return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiRegister,field: field);
   }
-  static Future<MResults> getProductByCate({List<Map<String,dynamic>> field}) async {
-    return await APIManager(request: REQUEST.GET).callApi(ApiEndPoint.apiGetProductByCate, field);
+  static Future<MResults> getProductByCate({Map<String, dynamic> field, Map<String, dynamic> params}) async {
+    return await APIManager(request: REQUEST.GET).callApi(url:ApiEndPoint.apiGetProductByCate,field:field,params: params);
   }
-  static Future<MResults> getListCart({@required List<Map<String, dynamic>> field}) async {
-    return await APIManager(request: REQUEST.GET).callApi(ApiEndPoint.apiGetListCart, field);
+  static Future<MResults> getListCart({Map<String, dynamic> field}) async {
+    return await APIManager(request: REQUEST.GET).callApi(url:ApiEndPoint.apiGetListCart, field:field);
   }
 }

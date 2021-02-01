@@ -1,4 +1,5 @@
 import 'package:coffeshop/common/Utils.dart';
+import 'package:coffeshop/common/animation/animation_counter/AnimationCounter.dart';
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/model/m_product.dart';
 import 'package:coffeshop/notifier/product_detail_notifier.dart';
@@ -6,6 +7,7 @@ import 'package:coffeshop/screen/cart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_sidekick/flutter_sidekick.dart';
 import 'package:provider/provider.dart';
 
 import '../common/Utils.dart';
@@ -19,22 +21,15 @@ class DetailProduct extends StatefulWidget {
 }
 
 class _DetailProductState extends State<DetailProduct> with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> offsetAnimation;
+  SidekickController controller;
   @override
   void initState() {
-    controller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
-    offsetAnimation = Tween(begin: 0.0, end: 5.0).chain(CurveTween(curve: Curves.elasticIn)).animate(controller)
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          controller.reverse();
-        }
-      });
+    controller = SidekickController(vsync: this, duration: Duration(milliseconds: 1250));
     super.initState();
   }
   @override
   void dispose() {
-    controller.dispose();
+    controller?.dispose();
     super.dispose();
   }
   @override
@@ -99,14 +94,30 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                                       Icons.shopping_cart,
                                       color: BASE_APP_COLOR,
                                     )),
-                                CircleAvatar(
-                                  radius: 10.0,
-                                  backgroundColor: Colors.red,
-                                  child: Text(
-                                    "1",
-                                    style: TextStyle(color: Colors.white, fontSize: 13.0),
-                                  ),
-                                ),
+                                Stack(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 10.0,
+                                      backgroundColor: Colors.red,
+                                      child: Text(
+                                        "${prdVM.badge != 0 ? prdVM.badge - 1 : 0}",
+                                        style: TextStyle(color: Colors.white, fontSize: 13.0),
+                                      ),
+                                    ),
+                                    Sidekick(
+                                      tag: 'source',
+                                      targetTag: 'target',
+                                      child: CircleAvatar(
+                                        radius: 10.0,
+                                        backgroundColor: Colors.red,
+                                        child: Text(
+                                          "${prdVM.badge}",
+                                          style: TextStyle(color: Colors.white, fontSize: 13.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
                               ],
                             ),
                           )),
@@ -177,7 +188,6 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                                   children: [
                                     RaisedButton(
                                       onPressed: () {
-                                        controller.forward(from: 0.0);
                                         prdVM.onIncrement(widget.mProductData.price.toDouble());
                                       },
                                       color: PRICE_COLOR,
@@ -200,7 +210,6 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                                     ),
                                     MaterialButton(
                                       onPressed: () {
-                                        controller.forward(from: 0.0);
                                         prdVM.onDecrease(widget.mProductData.price.toDouble());
                                       },
                                       color: BASE_APP_COLOR,
@@ -223,34 +232,64 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            child: RaisedButton(
-                                onPressed: (){
-
-                                },
-                                color: PRICE_COLOR,
-                                disabledColor: PRICE_COLOR,
-                                padding: EdgeInsets.only(top: 10.0,bottom: 10.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
+                            child: Stack(
+                              fit: StackFit.passthrough,
+                              children: [
+                                RaisedButton(
+                                    onPressed: (){
+                                    },
+                                    color: Colors.grey,
+                                    disabledColor: PRICE_COLOR,
+                                    padding: EdgeInsets.only(top: 10.0,bottom: 10.0),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child:Text(
+                                      "Order Now",
+                                      style: TextStyle(
+                                          color: TAB_COLOR,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 16.0
+                                      ),
+                                    )
                                 ),
-                                child:Text(
-                                  "Order Now",
-                                  style: TextStyle(
-                                      color: TAB_COLOR,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16.0
+                                Sidekick(
+                                  tag: 'target',
+                                  child: RaisedButton(
+                                      onPressed: () async{
+                                        await Future.delayed(Duration(milliseconds: 100),(){
+                                          prdVM.setBadge();
+                                        });
+                                        controller.moveToSource(context);
+                                      },
+                                      color: PRICE_COLOR,
+                                      disabledColor: PRICE_COLOR,
+                                      padding: EdgeInsets.only(top: 10.0,bottom: 10.0),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      child:Text(
+                                        "Order Now",
+                                        style: TextStyle(
+                                            color: TAB_COLOR,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 16.0
+                                        ),
+                                      )
                                   ),
-                                )
+                                ),
+                              ],
                             ),
-                          ),AnimatedBuilder(
-                                animation: offsetAnimation,
-                                builder: (buildContext, child) {
-                                  return Container(
-                                    padding: EdgeInsets.only(left: 16.0,top: offsetAnimation.value + 5.0, bottom: 5.0 - offsetAnimation.value),
-                                    child: Text( "${prdVM.totalPrice} VND", style: priceDetail, ),
-                                  );
-                                },
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 12.0),
+                            child: AnimationCounter(
+                              duration: Duration(milliseconds: 750),
+                              value: prdVM.totalPrice.toInt(), /* pass in a number like 2014 */
+                              color: Colors.white,
+                              size: 16,
                             ),
+                          )
                         ],
                       )
                     ],

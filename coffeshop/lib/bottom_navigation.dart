@@ -1,5 +1,6 @@
 import 'package:coffeshop/common/animation/spl/animation_screen.dart';
 import 'package:coffeshop/common/styles.dart';
+import 'package:coffeshop/notifier/product_detail_notifier.dart';
 import 'package:coffeshop/screen/cart.dart';
 import 'package:coffeshop/screen/home.dart';
 import 'package:coffeshop/screen/order_status.dart';
@@ -7,6 +8,7 @@ import 'package:coffeshop/screen/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 
 class BottomNavigation extends StatefulWidget {
   @override
@@ -20,6 +22,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   var unselectedColor = 0xFF6e6e6e;
   @override
   Widget build(BuildContext context) {
+    final prdVM = Provider.of<ProductDetailModel>(context);
     return MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: Stack(
@@ -67,7 +70,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                 radius: 8,
                                 backgroundColor: Colors.redAccent,
                                 child: Text(
-                                  "1",
+                                  "${prdVM.badge}",
                                   style: TextStyle(fontSize: 13.0, color: Colors.white,fontWeight: FontWeight.w500),
                                 ),
                               )

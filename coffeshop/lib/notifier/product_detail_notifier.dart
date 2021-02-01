@@ -5,6 +5,7 @@ class ProductDetailModel extends ChangeNotifier {
   double totalPrice = 0;
   String category;
   int duration = 0;
+  int badge = 0;
   void onIncrement(price){
     total += 1 ;
     totalPrice = price * total.toDouble();
@@ -33,6 +34,10 @@ class ProductDetailModel extends ChangeNotifier {
     Future.delayed(Duration(milliseconds: 700),(){
       duration = 0;
     });
+    notifyListeners();
+  }
+  void setBadge(){
+    badge += 1;
     notifyListeners();
   }
 }
