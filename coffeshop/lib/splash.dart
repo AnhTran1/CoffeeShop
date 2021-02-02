@@ -14,14 +14,15 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     init();
-    navigatorPage();
     super.initState();
   }
   void init() async{
     var pVM = Provider.of<ProductModel>(context,listen: false);
     var useVM = Provider.of<UserModel>(context,listen: false);
     useVM.getUser();
-    pVM.getCategory();
+    pVM.getCategory().then((value) {
+      navigatorPage();
+    });
   }
   @override
   Widget build(BuildContext context) {

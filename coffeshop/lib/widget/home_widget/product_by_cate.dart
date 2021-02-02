@@ -28,7 +28,7 @@ class _ProductByCateState extends State<ProductByCate> {
   initData() async{
     var prdVM = Provider.of<ProductDetailModel>(context,listen: false);
     var pVM = Provider.of<ProductModel>(context,listen: false);
-    await Future.delayed(Duration(milliseconds: 350),(){
+    await Future.delayed(Duration(milliseconds: 1500),(){
       prdVM.setCategory(this.widget.categoryName);
       pVM.getProduct(cateId: widget.cateId,page: 1);
     });

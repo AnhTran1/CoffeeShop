@@ -21,4 +21,7 @@ class ApiResponse {
   static Future<MResults> addCart({List<Map<String, dynamic>> field}) async {
     return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiAddCart, field:field);
   }
+  static Future<MResults> removeCart({List<Map<String, dynamic>> field}) async {
+    return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiRemoveCart, field:field);
+  }
 }

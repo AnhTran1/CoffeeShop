@@ -1,3 +1,4 @@
+import 'package:coffeshop/common/styles.dart';
 import 'package:flutter/material.dart';
 
 class Utils {
@@ -51,5 +52,39 @@ class Utils {
         );
       },
     );
+  }
+  static void showLoading(context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return  WillPopScope(
+          onWillPop: () async => false,
+          child: Center(
+            child: CircularProgressIndicator(
+              backgroundColor: BASE_APP_COLOR,
+            ),
+          ),
+        );
+      },
+    );
+  }
+  static void showSnackBarWithKey(GlobalKey<ScaffoldState> key, String message, color) {
+    key.currentState.removeCurrentSnackBar();
+    key.currentState.showSnackBar(SnackBar(
+        content: Container(
+          height: 30,
+          child: Text(
+            message,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16.0,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.start,
+          ),
+        ),
+        duration: Duration(milliseconds: 1000),
+        backgroundColor: color));
   }
 }

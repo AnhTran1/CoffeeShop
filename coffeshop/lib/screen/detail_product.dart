@@ -2,7 +2,9 @@ import 'package:coffeshop/api/api_response.dart';
 import 'package:coffeshop/common/Utils.dart';
 import 'package:coffeshop/common/animation/animation_counter/AnimationCounter.dart';
 import 'package:coffeshop/common/styles.dart';
+import 'package:coffeshop/model/m_cart.dart';
 import 'package:coffeshop/model/m_product.dart';
+import 'package:coffeshop/notifier/cart_notifier.dart';
 import 'package:coffeshop/notifier/product_detail_notifier.dart';
 import 'package:coffeshop/screen/cart.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,10 +24,11 @@ class DetailProduct extends StatefulWidget {
 }
 
 class _DetailProductState extends State<DetailProduct> with SingleTickerProviderStateMixin {
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   SidekickController controller;
   @override
   void initState() {
-    controller = SidekickController(vsync: this, duration: Duration(milliseconds: 1250));
+    controller = SidekickController(vsync: this, duration: Duration(milliseconds: 1000));
     super.initState();
   }
   @override
@@ -36,7 +39,9 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     final prdVM = Provider.of<ProductDetailModel>(context);
+    final cartVM = Provider.of<CartModel>(context);
     return Scaffold(
+        key: _key,
         body:  Container(
           height: Utils.height(context),
           child: Stack(
@@ -188,7 +193,7 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                                   children: [
                                     RaisedButton(
                                       onPressed: () {
-                                        prdVM.onIncrement(widget.mProductData.price.toDouble());
+                                        prdVM.onIncrement(widget.mProductData.price);
                                       },
                                       color: PRICE_COLOR,
                                       textColor: Colors.white,
@@ -210,7 +215,7 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                                     ),
                                     MaterialButton(
                                       onPressed: () {
-                                        prdVM.onDecrease(widget.mProductData.price.toDouble());
+                                        prdVM.onDecrease(widget.mProductData.price);
                                       },
                                       color: BASE_APP_COLOR,
                                       textColor: Colors.white,
@@ -237,10 +242,25 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                               children: [
                                 RaisedButton(
                                     onPressed: () async{
-                                      // controller.moveToSource(context);
-                                      // await Future.delayed(Duration(milliseconds: 1250),(){
-                                      //   prdVM.setBadge();
-                                      // });
+                                      Utils.showLoading(context);
+                                      prdVM.addCart(widget.mProductData.id, prdVM.totalQuantity).then((value) {
+                                        if(value.loaded){
+                                          cartVM.updateByAddCart().then((value) async{
+                                            Navigator.pop(context);
+                                            if(value.loaded){
+                                              prdVM.initData(widget.mProductData.price);
+                                              MCart mCart = MCart.fromJson(value.data);
+                                              controller.moveToSource(context);
+                                              await Future.delayed(Duration(milliseconds: 1000),(){
+                                                prdVM.setBadge(mCart.data.length);
+                                              });
+                                            }
+                                          });
+                                        } else if(value.loadFailed){
+                                          Navigator.pop(context);
+                                          Utils.showAlertMessage(context, value.message);
+                                        }
+                                      });
                                     },
                                     color: PRICE_COLOR,
                                     disabledColor: PRICE_COLOR,
@@ -261,13 +281,23 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                                   tag: 'target',
                                   child: RaisedButton(
                                       onPressed: () async{
+                                        Utils.showLoading(context);
                                         prdVM.addCart(widget.mProductData.id, prdVM.totalQuantity).then((value) {
                                           if(value.loaded){
-                                            controller.moveToSource(context);
-                                             Future.delayed(Duration(milliseconds: 1250),(){
-                                              prdVM.setBadge();
+                                            cartVM.updateByAddCart().then((value) async{
+                                              Navigator.pop(context);
+                                              if(value.loaded){
+                                                prdVM.initData(widget.mProductData.price);
+                                                MCart mCart = MCart.fromJson(value.data);
+                                                controller.moveToSource(context);
+                                                await Future.delayed(Duration(milliseconds: 1000),(){
+                                                  prdVM.setBadge(mCart.data.length);
+                                                });
+                                              }
                                             });
                                           } else if(value.loadFailed){
+                                            Navigator.pop(context);
+                                            Utils.showAlertMessage(context, value.message);
                                           }
                                         });
                                       },

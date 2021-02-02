@@ -2,7 +2,6 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:coffeshop/api/api_response.dart';
-import 'package:coffeshop/common/dumy/product.dart';
 import 'package:coffeshop/model/m_category.dart';
 import 'package:coffeshop/model/m_product.dart';
 import 'package:coffeshop/model/m_results.dart';

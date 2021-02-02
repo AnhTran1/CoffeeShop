@@ -3,21 +3,16 @@ import 'package:coffeshop/api/api_response.dart';
 import 'package:coffeshop/common/dumy/product.dart';
 import 'package:coffeshop/model/m_cart.dart';
 import 'package:coffeshop/model/m_results.dart';
+import 'package:coffeshop/notifier/product_detail_notifier.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class CartModel extends ChangeNotifier {
   MResults mCartResult = MResults(loading: true,loaded: false,loadFailed: false,loadMore: false,message: "",data: null);
   MCart mCart;
-  double totalPrice = 0.0;
+  int totalPrice = 0;
   bool selectAll = false;
   bool changePrice = false;
-  void getCart() async{
-    mCartResult = await ApiResponse.getListCart();
-    if(mCartResult.data != null){
-      mCart = MCart.fromJson(mCartResult.data);
-    }
-    notifyListeners();
-  }
   onSelectAll(value){
     if(mCart != null && mCart.data.length > 0){
       if(selectAll) {
@@ -85,5 +80,31 @@ class CartModel extends ChangeNotifier {
       changePrice = false;
     });
     notifyListeners();
+  }
+  // api
+  void getCart(context) async{
+    mCartResult = await ApiResponse.getListCart();
+    if(mCartResult.loaded){
+      mCart = MCart.fromJson(mCartResult.data);
+      if(mCart != null && mCart.data != null){
+        var prdVM = Provider.of<ProductDetailModel>(context,listen: false);
+        prdVM.setBadge(mCart.data.length);
+      }
+    }
+    notifyListeners();
+  }
+  Future<MResults> updateByAddCart() async{
+    MResults mUpdateByAddCart = MResults(loading: true,loaded: false,loadFailed: false,loadMore: false,message: "",data: null);
+    mUpdateByAddCart = await ApiResponse.getListCart();
+    if(mUpdateByAddCart.loaded){
+      mCart = MCart.fromJson(mCartResult.data);
+    }
+    return mUpdateByAddCart;
+  }
+  Future<MResults> removeCart(context,cartId) async{
+    MResults mRemoveCart = MResults(loading: true,loaded: false,loadFailed: false,loadMore: false,message: "",data: null);
+    mRemoveCart = await ApiResponse.removeCart(field: [{"cart_id":cartId}]);
+    getCart(context);
+    return mRemoveCart;
   }
 }

@@ -5,4 +5,5 @@ class ApiEndPoint {
   static final String apiGetProductByCate = "/api/v1/list-item-category";
   static final String apiGetListCart = "/api/v1/list-cart";
   static final String apiAddCart = "/api/v1/add-cart";
+  static final String apiRemoveCart = "/api/v1/remove-cart";
 }

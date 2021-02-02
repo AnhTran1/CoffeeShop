@@ -1,5 +1,6 @@
 import 'package:coffeshop/common/animation/spl/animation_screen.dart';
 import 'package:coffeshop/common/styles.dart';
+import 'package:coffeshop/notifier/cart_notifier.dart';
 import 'package:coffeshop/notifier/product_detail_notifier.dart';
 import 'package:coffeshop/screen/cart.dart';
 import 'package:coffeshop/screen/home.dart';
@@ -55,6 +56,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           setState(() {
                             currentIndex = value;
                           });
+                          if(value == 2 ){
+                            var cartVm = Provider.of<CartModel>(context,listen: false);
+                            cartVm.getCart(context);
+                          }
                         },
                         items: [
                           BottomNavigationBarItem(icon: Icon(Icons.home),title: Text("")),
@@ -66,7 +71,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                 Icons.shopping_cart,
                                 size: 20.0,
                               ),
-                              CircleAvatar(
+                              prdVM.badge > 0 ? CircleAvatar(
                                 radius: 8,
                                 backgroundColor: Colors.redAccent,
                                 child: Text(
@@ -74,11 +79,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                   style: TextStyle(fontSize: 13.0, color: Colors.white,fontWeight: FontWeight.w500),
                                 ),
                               )
-                              //      :Icon(
-                              //   Icons.shopping_cart,
-                              //   size: 20.0,
-                              //   color: Colors.transparent,
-                              // ),
+                                 :Icon(
+                                Icons.shopping_cart,
+                                size: 20.0,
+                                color: Colors.transparent,
+                              ),
                             ],
                           ),title: Text("")),
                           BottomNavigationBarItem(icon: Icon(Icons.account_circle),title: Text("")),

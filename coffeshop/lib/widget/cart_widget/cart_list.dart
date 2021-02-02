@@ -14,11 +14,11 @@ class CartList extends StatelessWidget {
     final cartVm = Provider.of<CartModel>(context);
     final prdVM = Provider.of<ProductDetailModel>(context);
     if(cartVm.mCartResult.loading){
-      return CircularLoading();
+      return Padding(
+          padding: EdgeInsets.only(top: Utils.height(context) / 3),
+          child: CircularLoading()
+      );
     } else if(cartVm.mCartResult.loaded){
-      Future.delayed(Duration(milliseconds: 50),(){
-        prdVM.initBadge(cartVm.mCart != null ? cartVm.mCart.data.length : 0);
-      });
       if(cartVm.mCart != null && cartVm.mCart.data.length > 0){
         List<MCartData> cartList = cartVm.mCart.data;
         return ListView.builder(
@@ -45,9 +45,36 @@ class CartList extends StatelessWidget {
                         cartList[index].name,
                         style: title,
                       ),
+                      InkWell(
+                        onTap: (){
+                          Utils.showLoading(context);
+                          cartVm.removeCart(context,cartList[index].itemId).then((value) {
+                            Navigator.pop(context);
+                            if(value.loaded){
+                              cartVm.mCart.data.removeAt(index);
+                            }
+                            else if(value.loadFailed){
+                              Utils.showAlertMessage(context, value.message);
+                            }
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(top: 3.0,bottom: 3.0,left: 10.0,right: 10.0),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          child: Text('Xóa',style: profileMail),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
                       SizedBox(
-                        width:20.0,
-                        height: 20.0,
+                        width:25.0,
+                        height: 25.0,
                         child: Transform.scale(
                           scale: 1.1,
                           child: Theme(
@@ -64,11 +91,7 @@ class CartList extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
+                      SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(7.0)),
                         child: CachedNetworkImage(

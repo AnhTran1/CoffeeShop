@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 class ProductDetailModel extends ChangeNotifier {
   int totalQuantity = 1;
-  double totalPrice = 0;
+  int totalPrice = 0;
   String category;
   int duration = 0;
   int badge = 0;
@@ -22,7 +22,7 @@ class ProductDetailModel extends ChangeNotifier {
     setDuration();
     notifyListeners();
   }
-  void initData(price){
+  void initData(int price){
     totalPrice = price;
     totalQuantity = 1;
     notifyListeners();
@@ -38,11 +38,7 @@ class ProductDetailModel extends ChangeNotifier {
     });
     notifyListeners();
   }
-  void setBadge(){
-    badge += 1;
-    notifyListeners();
-  }
-  void initBadge(int value){
+  void setBadge(int value){
     badge = value;
     notifyListeners();
   }

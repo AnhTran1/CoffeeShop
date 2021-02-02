@@ -17,7 +17,7 @@ class ItemProduct extends StatelessWidget {
     final prdVM = Provider.of<ProductDetailModel>(context);
     return InkWell(
       onTap: (){
-        prdVM.initData(product.price.toDouble());
+        prdVM.initData(product.price);
         Navigator.push(
           context,
           PageRouteBuilder(
