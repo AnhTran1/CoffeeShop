@@ -1,3 +1,4 @@
+import 'package:coffeshop/api/api_response.dart';
 import 'package:coffeshop/common/Utils.dart';
 import 'package:coffeshop/common/animation/animation_counter/AnimationCounter.dart';
 import 'package:coffeshop/common/styles.dart';
@@ -29,7 +30,7 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
   }
   @override
   void dispose() {
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
   @override
@@ -96,24 +97,23 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                                     )),
                                 Stack(
                                   children: [
+                                    Sidekick(
+                                      tag: 'source',
+                                      targetTag: 'target',
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                        child: CircleAvatar(
+                                            radius: 10.0,
+                                            child: Image.network(noImage1,width: 24,height: 24,fit: BoxFit.cover)
+                                        ),
+                                      ),
+                                    ),
                                     CircleAvatar(
                                       radius: 10.0,
                                       backgroundColor: Colors.red,
                                       child: Text(
-                                        "${prdVM.badge != 0 ? prdVM.badge - 1 : 0}",
+                                        "${prdVM.badge}",
                                         style: TextStyle(color: Colors.white, fontSize: 13.0),
-                                      ),
-                                    ),
-                                    Sidekick(
-                                      tag: 'source',
-                                      targetTag: 'target',
-                                      child: CircleAvatar(
-                                        radius: 10.0,
-                                        backgroundColor: Colors.red,
-                                        child: Text(
-                                          "${prdVM.badge}",
-                                          style: TextStyle(color: Colors.white, fontSize: 13.0),
-                                        ),
                                       ),
                                     ),
                                   ],
@@ -200,7 +200,7 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                                       shape: CircleBorder(),
                                     ),
                                     Text(
-                                        prdVM.total < 10 ? "0${prdVM.total}" : "${prdVM.total}",
+                                        prdVM.totalQuantity < 10 ? "0${prdVM.totalQuantity}" : "${prdVM.totalQuantity}",
                                         textScaleFactor: 1.5,
                                         style: TextStyle(
                                           color: WHITE_COLOR,
@@ -236,9 +236,13 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                               fit: StackFit.passthrough,
                               children: [
                                 RaisedButton(
-                                    onPressed: (){
+                                    onPressed: () async{
+                                      // controller.moveToSource(context);
+                                      // await Future.delayed(Duration(milliseconds: 1250),(){
+                                      //   prdVM.setBadge();
+                                      // });
                                     },
-                                    color: Colors.grey,
+                                    color: PRICE_COLOR,
                                     disabledColor: PRICE_COLOR,
                                     padding: EdgeInsets.only(top: 10.0,bottom: 10.0),
                                     shape: RoundedRectangleBorder(
@@ -257,10 +261,15 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                                   tag: 'target',
                                   child: RaisedButton(
                                       onPressed: () async{
-                                        await Future.delayed(Duration(milliseconds: 100),(){
-                                          prdVM.setBadge();
+                                        prdVM.addCart(widget.mProductData.id, prdVM.totalQuantity).then((value) {
+                                          if(value.loaded){
+                                            controller.moveToSource(context);
+                                             Future.delayed(Duration(milliseconds: 1250),(){
+                                              prdVM.setBadge();
+                                            });
+                                          } else if(value.loadFailed){
+                                          }
                                         });
-                                        controller.moveToSource(context);
                                       },
                                       color: PRICE_COLOR,
                                       disabledColor: PRICE_COLOR,

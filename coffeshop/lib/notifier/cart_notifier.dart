@@ -16,7 +16,6 @@ class CartModel extends ChangeNotifier {
     if(mCartResult.data != null){
       mCart = MCart.fromJson(mCartResult.data);
     }
-    // cartList = ProductList().arr.map((value) => MCart.fromJson(value)).toList();
     notifyListeners();
   }
   onSelectAll(value){

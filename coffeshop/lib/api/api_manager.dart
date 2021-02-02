@@ -21,7 +21,7 @@ class APIManager {
     return header;
   }
 
-  Future<MResults> callApi({String url, @required Map<String, dynamic> field,@required Map<String, dynamic> params}) async {
+  Future<MResults> callApi({String url, @required List<Map<String, dynamic>> field,@required Map<String, dynamic> params}) async {
     var responseJson;
     var request;
     MResults mResult = MResults(loading: true,loaded: false,loadMore: false,loadFailed: false,message: "",data: null);
@@ -42,7 +42,9 @@ class APIManager {
     request.headers.addAll(await  headers());
     await Future.delayed(Duration.zero,(){
       if(field != null){
-        field.addAll(field);
+        field.forEach((element) {
+          request.fields['${element.keys.first}'] = '${element.values.last}';
+        });
       }
     });
     try {

@@ -3,6 +3,7 @@ import 'package:coffeshop/common/Utils.dart';
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/model/m_cart.dart';
 import 'package:coffeshop/notifier/cart_notifier.dart';
+import 'package:coffeshop/notifier/product_detail_notifier.dart';
 import 'package:coffeshop/widget/error_widget/error_screen.dart';
 import 'package:coffeshop/widget/loading/circular_loading.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +12,13 @@ class CartList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartVm = Provider.of<CartModel>(context);
+    final prdVM = Provider.of<ProductDetailModel>(context);
     if(cartVm.mCartResult.loading){
       return CircularLoading();
     } else if(cartVm.mCartResult.loaded){
+      Future.delayed(Duration(milliseconds: 50),(){
+        prdVM.initBadge(cartVm.mCart != null ? cartVm.mCart.data.length : 0);
+      });
       if(cartVm.mCart != null && cartVm.mCart.data.length > 0){
         List<MCartData> cartList = cartVm.mCart.data;
         return ListView.builder(

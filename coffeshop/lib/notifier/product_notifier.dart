@@ -24,7 +24,7 @@ class ProductModel extends ChangeNotifier {
     return mResults;
   }
   void getProduct({String cateId, int page}) async{
-    mProductResult = await ApiResponse.getProductByCate(field: {"page":1},params: {"category_id": cateId});
+    mProductResult = await ApiResponse.getProductByCate(params: {"category_id": cateId});
     if(mProductResult.loaded && mProductResult.data != null){
       var jsonList = jsonDecode(jsonEncode(mProductResult.data))["data"] as List;
       productList[cateId] = jsonList.map((i) => MProduct.fromJson(i)).toList();

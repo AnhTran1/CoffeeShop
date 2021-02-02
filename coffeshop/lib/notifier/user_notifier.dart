@@ -107,11 +107,7 @@ class UserModel extends ChangeNotifier {
     if(onMessage != null){
       Utils.showAlertMessage(context, onMessage);
     } else {
-      mResults = await ApiResponse.register({
-        "name": "${mRegister.name}",
-        "password": "${mRegister.passWord}",
-        "c_password": "${mRegister.conFirmPassword}"
-      });
+      mResults = await ApiResponse.register(field:[{"name":"${mRegister.name}"},{"email":"${mRegister.email}"},{"password":"${mRegister.passWord}"},{"c_password":"${mRegister.conFirmPassword}"}]);
     }
     return mResults;
   }
@@ -122,9 +118,7 @@ class UserModel extends ChangeNotifier {
       Utils.showAlertMessage(context, onMessage);
     }
     else {
-      mResults = await ApiResponse.login({
-        "email":"${formLogin[0]}",
-        "password":"${formLogin[1]}"});
+      mResults = await ApiResponse.login(field:[{"email":"${formLogin[0]}"},{"password":"${formLogin[1]}"}]);
     }
     return mResults;
   }

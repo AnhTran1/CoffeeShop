@@ -1,28 +1,30 @@
+import 'package:coffeshop/api/api_response.dart';
+import 'package:coffeshop/model/m_results.dart';
 import 'package:flutter/cupertino.dart';
 
 class ProductDetailModel extends ChangeNotifier {
-  int total = 1;
+  int totalQuantity = 1;
   double totalPrice = 0;
   String category;
   int duration = 0;
   int badge = 0;
   void onIncrement(price){
-    total += 1 ;
-    totalPrice = price * total.toDouble();
+    totalQuantity += 1 ;
+    totalPrice = price * totalQuantity;
     setDuration();
     notifyListeners();
   }
   void onDecrease(price){
-    if(total > 1) {
-      total -= 1;
+    if(totalQuantity > 1) {
+      totalQuantity -= 1;
     }
-    totalPrice = price * total.toDouble();
+    totalPrice = price * totalQuantity;
     setDuration();
     notifyListeners();
   }
   void initData(price){
     totalPrice = price;
-    total = 1;
+    totalQuantity = 1;
     notifyListeners();
   }
   void setCategory(value){
@@ -39,5 +41,14 @@ class ProductDetailModel extends ChangeNotifier {
   void setBadge(){
     badge += 1;
     notifyListeners();
+  }
+  void initBadge(int value){
+    badge = value;
+    notifyListeners();
+  }
+  Future<MResults> addCart(itemId,quantity) async{
+    MResults mAddCartResult = MResults(loading: true,loaded: false,loadFailed: false,loadMore: false,message: "",data: null);
+    mAddCartResult =  await ApiResponse.addCart(field: [{"item_id":itemId},{"quantity":quantity}]);
+    return mAddCartResult;
   }
 }
