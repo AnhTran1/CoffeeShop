@@ -1,6 +1,4 @@
-import 'package:coffeshop/api/api_manager.dart';
 import 'package:coffeshop/api/api_response.dart';
-import 'package:coffeshop/common/dumy/product.dart';
 import 'package:coffeshop/model/m_cart.dart';
 import 'package:coffeshop/model/m_results.dart';
 import 'package:coffeshop/notifier/product_detail_notifier.dart';
@@ -13,6 +11,8 @@ class CartModel extends ChangeNotifier {
   int totalPrice = 0;
   bool selectAll = false;
   bool changePrice = false;
+  bool isActiveOrder = false;
+  List<MCartData> mOrderDetail = new List();
   onSelectAll(value){
     if(mCart != null && mCart.data.length > 0){
       if(selectAll) {
@@ -53,11 +53,15 @@ class CartModel extends ChangeNotifier {
   onTotalPrice() async{
     var arr = [];
     var arrChecks = [];
+    if(mOrderDetail != null){
+      mOrderDetail.clear();
+    }
     await Future.delayed(Duration.zero,(){
       mCart.data.forEach((element) {
         if(element.isCheck){
           arr.add(element.quantity * element.price);
           arrChecks.add(element.isCheck);
+          mOrderDetail.insert(0, element);
         }
       });
     });
@@ -67,6 +71,11 @@ class CartModel extends ChangeNotifier {
       selectAll = true;
     }
     totalPrice = arr.fold(0, (p, c) => p + c);
+    if(totalPrice > 0){
+      isActiveOrder = true;
+    }  else {
+      isActiveOrder = false;
+    }
     onChangePrice();
     notifyListeners();
   }
@@ -79,6 +88,21 @@ class CartModel extends ChangeNotifier {
     Future.delayed(Duration(milliseconds: 10),(){
       changePrice = false;
     });
+    notifyListeners();
+  }
+  void onReturnCart(){
+    totalPrice = 0;
+    selectAll = false;
+    changePrice = false;
+    isActiveOrder = false;
+    if(mOrderDetail != null){
+      mOrderDetail.clear();
+    }
+    if(mCart != null && mCart.data.length > 0) {
+      mCart.data.forEach((element) {
+        element.isCheck = false;
+      });
+    }
     notifyListeners();
   }
   // api

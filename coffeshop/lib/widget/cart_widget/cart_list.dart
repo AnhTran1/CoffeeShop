@@ -131,7 +131,7 @@ class CartList extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 10),
                                     child: Text(
-                                      cartList[index].priceQuantity != null ? "${cartList[index].priceQuantity}.0 VND" : "${cartList[index].price}.0 VND",
+                                      "${cartList[index].price}.0 VND",
                                       style: TextStyle(
                                         color: PRICE_COLOR,
                                         fontWeight: FontWeight.w700,
@@ -142,7 +142,7 @@ class CartList extends StatelessWidget {
                                   ),
                                   Container(
                                     height: 25.0,
-                                    width: 110,
+                                    width: 90,
                                     padding: EdgeInsets.only(left:2.0,right: 2.0),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(Radius.circular(20.0)),

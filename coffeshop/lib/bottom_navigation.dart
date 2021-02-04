@@ -59,6 +59,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           if(value == 2 ){
                             var cartVm = Provider.of<CartModel>(context,listen: false);
                             cartVm.getCart(context);
+                          } else {
+                            var cartVm = Provider.of<CartModel>(context,listen: false);
+                            cartVm.onReturnCart();
                           }
                         },
                         items: [
