@@ -60,6 +60,11 @@ const titleOrderDetail = TextStyle(
   fontWeight: FontWeight.w500,
   fontSize: 16.0,
 );
+const addressStyle = TextStyle(
+  color: Colors.black38,
+  fontWeight: FontWeight.w500,
+  fontSize: 14.0,
+);
 const noImage = "https://foolproofliving.com/wp-content/uploads/2019/03/Turkish-Coffee-Recipe-600x600.jpg";
 const noImage1 = "https://www.howsweeteats.com/wp-content/uploads/2018/10/salted-maple-coffee-I-howsweeteats.com-9.jpg";
 const image_placeholder = "assets/images/placeholder.png";

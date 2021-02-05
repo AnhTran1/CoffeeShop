@@ -3,6 +3,7 @@ import 'package:coffeshop/common/Utils.dart';
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/notifier/cart_notifier.dart';
 import 'package:coffeshop/screen/address.dart';
+import 'package:coffeshop/screen/address_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,7 @@ class _OrderConfirmState extends State<OrderConfirm> {
     final cartVm = Provider.of<CartModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Xác nhận đơn hàng'),
+        title: Text('Danh sách địa chỉ'),
         backgroundColor: BASE_APP_COLOR,
         centerTitle: true,
       ),
@@ -183,7 +184,7 @@ class _OrderConfirmState extends State<OrderConfirm> {
                             context,
                             new PageRouteBuilder(
                                 pageBuilder: (BuildContext context, _, __) {
-                                  return new Address();
+                                  return new AddressList();
                                 }
                             )
                         );

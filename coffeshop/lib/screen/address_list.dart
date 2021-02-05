@@ -18,115 +18,108 @@ class _AddressListState extends State<AddressList> {
         backgroundColor: BASE_APP_COLOR,
         automaticallyImplyLeading: true,
       ),
-      body: Container(
-        width: Utils.width(context),
-        margin: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Expanded(
-                child: ListView.builder (
-                  padding: EdgeInsets.only(top: 10),
-                  shrinkWrap: true,
-                  itemCount: 3,
-                  itemBuilder: (context,index) {
-                    return Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            width: Utils.width(context),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(7)),
-                              boxShadow: [
-                                BoxShadow(color: Colors.grey.withOpacity(0.3), offset: Offset(0, 0), blurRadius: 4, spreadRadius:1.5)
-                              ],
-                              color: Colors.white
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Nhà',
-                                      style:TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: BASE_APP_COLOR
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  ListView.builder(
+                    itemCount: 3,
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: EdgeInsets.only(left: 10.0,right: 10.0),
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: (){
+
+                        },
+                        child: Container(
+                          decoration: CustomDecoration,
+                          padding: EdgeInsets.all(10.0),
+                          margin: EdgeInsets.only(top: 10.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Nguyễn Hồng Quang",style: titleOrderDetail),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap:(){},
+                                        child: Icon(Icons.edit,color: BASE_APP_COLOR),
                                       ),
-                                    ),
-                                    Text('Hà Nội'),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-
-                                    MaterialButton(
-                                      onPressed: () {
-
-                                      },
-                                      child: Icon(
-                                        Icons.edit,
-                                        size: 20,
-                                        color: BASE_APP_COLOR,
-                                      ),
-                                      padding: EdgeInsets.only(right: 5,left: 0,bottom: 0,top: 0),
-                                      height: 20.0,
-                                      minWidth: 20.0,
-                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    ),
-                                    MaterialButton(
-                                      onPressed: () {
-
-                                      },
-
-                                      child: Icon(
-                                        Icons.delete,
-                                        size: 20,
-                                        color: BASE_APP_COLOR,
-                                      ),
-                                      padding: EdgeInsets.zero,
-                                      height: 20.0,
-                                      minWidth: 20.0,
-                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    ),
-                                  ],
-                                )
-
-                              ]
-                            ),
+                                      SizedBox(width: 5.0),
+                                      InkWell(
+                                        onTap:(){},
+                                        child: Icon(Icons.delete,color: BASE_APP_COLOR),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 5.0),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.phone,color: Colors.black38),
+                                  SizedBox(width: 5.0),
+                                  Text("0384453681",style: addressStyle),
+                                ],
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.location_on,color: Colors.black38),
+                                  SizedBox(width: 5.0),
+                                  Flexible(child: Text("Chung cư N04B2,khu đô thị cầu giấy, hà nội khu đô thị cầu giấy, hà nội ",style: addressStyle)),
+                                ],
+                              ),
+                              index == 0 ? Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text("Địa chỉ mặc định",style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14.0
+                                  )),
+                                ],
+                              ) : SizedBox(),
+                            ],
                           ),
-                          SizedBox(
-                            height: 20,
-                          )
+                        ),
+                      );
+                    },
+                  ),
+                  InkWell(
+                    onTap: (){
+
+                    },
+                    child: Container(
+                      decoration: CustomDecoration,
+                      height: 100,
+                      width: Utils.width(context) - 20,
+                      margin: EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add,color: Colors.black38),
+                          Text("Thêm địa chỉ",style: addressStyle),
                         ],
                       ),
-                    );
-                  },
-                )
+                    ),
+                  )
+                ],
+              ),
             ),
-            SizedBox(
-              width: Utils.width(context),
-              child: RaisedButton(onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CreateAddress()),
-                );
-              },
-                  child: Text(
-                    'Thêm địa chỉ',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  color: PRICE_COLOR,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7.0),
-                  )),
-            )
-          ],
-        ),
-      ),
+          ),
+        ],
+      )
     );
   }
 }
