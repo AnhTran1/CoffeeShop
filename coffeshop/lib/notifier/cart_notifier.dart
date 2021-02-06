@@ -1,4 +1,5 @@
 import 'package:coffeshop/api/api_response.dart';
+import 'package:coffeshop/model/m_address.dart';
 import 'package:coffeshop/model/m_cart.dart';
 import 'package:coffeshop/model/m_results.dart';
 import 'package:coffeshop/notifier/product_detail_notifier.dart';
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 class CartModel extends ChangeNotifier {
   MResults mCartResult = MResults(loading: true,loaded: false,loadFailed: false,loadMore: false,message: "",data: null);
   MCart mCart;
+  MAddressData mDeliveryAddress;
   int totalPrice = 0;
   bool selectAll = false;
   bool changePrice = false;
@@ -103,6 +105,10 @@ class CartModel extends ChangeNotifier {
         element.isCheck = false;
       });
     }
+    notifyListeners();
+  }
+  void setDeliveryAddress (MAddressData data){
+    mDeliveryAddress = data;
     notifyListeners();
   }
   // api

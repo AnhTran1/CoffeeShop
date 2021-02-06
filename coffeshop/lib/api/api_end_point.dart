@@ -6,4 +6,7 @@ class ApiEndPoint {
   static final String apiGetListCart = "/api/v1/list-cart";
   static final String apiAddCart = "/api/v1/add-cart";
   static final String apiRemoveCart = "/api/v1/remove-cart";
+  static final String apiAddAddress = "/api/v1/add-address";
+  static final String apiGetAddress = "/api/v1/list-address";
+  static final String apiRemoveAddress = "/api/v1/remove-address";
 }

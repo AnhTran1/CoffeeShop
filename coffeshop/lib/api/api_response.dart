@@ -24,4 +24,13 @@ class ApiResponse {
   static Future<MResults> removeCart({List<Map<String, dynamic>> field}) async {
     return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiRemoveCart, field:field);
   }
+  static Future<MResults> addAddress({List<Map<String, dynamic>> field}) async {
+    return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiAddAddress, field:field);
+  }
+  static Future<MResults> getAddressList({List<Map<String, dynamic>> field}) async {
+    return await APIManager(request: REQUEST.GET).callApi(url:ApiEndPoint.apiGetAddress, field:field);
+  }
+  static Future<MResults> removeAddress({List<Map<String, dynamic>> field}) async {
+    return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiRemoveAddress, field:field);
+  }
 }

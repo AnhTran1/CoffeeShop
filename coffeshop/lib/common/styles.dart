@@ -56,7 +56,7 @@ const button = TextStyle(
   fontSize: 16.0,
 );
 const titleOrderDetail = TextStyle(
-  color: Colors.black,
+  color: BASE_APP_COLOR,
   fontWeight: FontWeight.w500,
   fontSize: 16.0,
 );

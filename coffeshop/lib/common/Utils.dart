@@ -1,6 +1,6 @@
 import 'package:coffeshop/common/styles.dart';
 import 'package:flutter/material.dart';
-
+typedef VoidCallback = void Function();
 class Utils {
   static width(context) {
     return MediaQuery.of(context).size.width;
@@ -32,6 +32,16 @@ class Utils {
     }
     return false;
   }
+  static bool validatePhone(String phoneNumber) {
+    if (phoneNumber.length > 0) {
+      Pattern pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+      RegExp regex = new RegExp(pattern);
+      if (regex.hasMatch(phoneNumber)) {
+        return true;
+      }
+    }
+    return false;
+  }
   static Future<void>  showAlertMessage(context,String message) async{
     showDialog<int>(
       context: context,
@@ -52,6 +62,52 @@ class Utils {
         );
       },
     );
+  }
+  static void showAlertConfirm(title, content, cancel, ok, context, VoidCallback event) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            backgroundColor: Colors.white,
+            title: new Text(
+              "Thông báo",
+
+            ),
+            content: new Text(
+              content,
+
+            ),
+            actions: <Widget>[
+              RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                color: BASE_APP_COLOR,
+                child: new Text(
+                  cancel,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                color: BASE_APP_COLOR,
+                child: new Text(
+                  ok,
+
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  event();
+                  // call another functions here ---
+                },
+              ),
+            ],
+          );
+        });
   }
   static void showLoading(context) {
     showDialog(

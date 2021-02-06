@@ -1,16 +1,19 @@
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/widget/login_widget/text_field_container.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ItemAddress extends StatelessWidget {
   final String title;
   final String hintText;
   final ValueChanged<String> onChanged;
+  final TextEditingController textEditingController;
   const ItemAddress({
     Key key,
     this.title,
     this.hintText,
     this.onChanged,
+    this.textEditingController
   }) : super(key: key);
 
   @override
@@ -27,10 +30,12 @@ class ItemAddress extends StatelessWidget {
         Expanded(
           child: TextField(
             onChanged: onChanged,
+            controller: textEditingController,
             decoration: InputDecoration(
               hintText: hintText,
               border: InputBorder.none,
-              hintStyle: messageStyle
+              hintStyle: messageStyle,
+              contentPadding: EdgeInsets.only(right: 10.0)
             ),
           ),
         ),

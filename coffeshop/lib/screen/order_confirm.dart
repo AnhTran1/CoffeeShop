@@ -18,7 +18,7 @@ class _OrderConfirmState extends State<OrderConfirm> {
     final cartVm = Provider.of<CartModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Danh sách địa chỉ'),
+        title: Text('Xác nhận đơn hàng'),
         backgroundColor: BASE_APP_COLOR,
         centerTitle: true,
       ),
@@ -184,7 +184,7 @@ class _OrderConfirmState extends State<OrderConfirm> {
                             context,
                             new PageRouteBuilder(
                                 pageBuilder: (BuildContext context, _, __) {
-                                  return new AddressList();
+                                  return new AddressList(showAppbar: true);
                                 }
                             )
                         );
@@ -206,9 +206,10 @@ class _OrderConfirmState extends State<OrderConfirm> {
                                   fontWeight: FontWeight.w400,
                                   fontSize: 14.0,
                                 )),
-                                Text("name",style: titleOrderDetail),
-                                Text("address",style: TextStyle(
-                                  color: Colors.red,
+                                SizedBox(height: 5.0),
+                                Text(cartVm.mDeliveryAddress != null ? cartVm.mDeliveryAddress.name : "Tên người nhận",style: titleOrderDetail),
+                                Text(cartVm.mDeliveryAddress != null ? cartVm.mDeliveryAddress.addressDetail : "Địa chỉ nhận hàng",style: TextStyle(
+                                  color: cartVm.mDeliveryAddress != null ? Colors.black38 :Colors.red,
                                   fontWeight: FontWeight.w400,
                                   fontSize: 14.0,
                                 ))
@@ -231,9 +232,13 @@ class _OrderConfirmState extends State<OrderConfirm> {
             padding: EdgeInsets.only(left: 10.0,right: 10.0),
             child: RaisedButton(
               onPressed: (){
+                if(cartVm.mDeliveryAddress != null){
+
+                }else {
+                  Utils.showAlertMessage(context, "Vui lòng chọn một địa chỉ giao hàng");
+                }
               },
               color: PRICE_COLOR,
-              disabledColor: PRICE_COLOR,
               padding: EdgeInsets.only(top: 10.0,bottom: 10.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(7.0),

@@ -86,7 +86,7 @@ class ItemProduct extends StatelessWidget {
                   Text(product.name,style: title),
                   Padding(
                       padding: EdgeInsets.only(top: 5.0),
-                      child: Text("${product.price}",style: price)),
+                      child: Text("${product.price}.0 VND",style: price)),
                 ],
               ),
             )

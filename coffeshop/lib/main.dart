@@ -1,3 +1,4 @@
+import 'package:coffeshop/notifier/address_notifier.dart';
 import 'package:coffeshop/notifier/order_detail_notifier.dart';
 import 'package:coffeshop/notifier/product_detail_notifier.dart';
 import 'package:coffeshop/notifier/user_notifier.dart';
@@ -20,6 +21,7 @@ void main() {
           ChangeNotifierProvider(create: (context) => CartModel()),
           ChangeNotifierProvider(create: (context) => UserModel()),
           ChangeNotifierProvider(create: (context) => OrderDetailNotifier()),
+          ChangeNotifierProvider(create: (context) => AddressModel()),
         ],
         child: MyApp(),
       ),
