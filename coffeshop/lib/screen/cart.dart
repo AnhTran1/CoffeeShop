@@ -5,6 +5,7 @@ import 'package:coffeshop/notifier/cart_notifier.dart';
 import 'package:coffeshop/notifier/order_detail_notifier.dart';
 import 'package:coffeshop/screen/order_confirm.dart';
 import 'package:coffeshop/widget/cart_widget/cart_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +37,7 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: BASE_APP_COLOR,
-          title: Text("Cart"),
+          title: Text("Giỏ hàng"),
           centerTitle: true,
           automaticallyImplyLeading: false,
           leading: widget.showClose ? IconButton(
@@ -48,7 +49,7 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
               margin: EdgeInsets.only(right: 10.0),
               alignment: Alignment.center,
               child: Text(
-                  "Select all",
+                  "Chọn tất cả",
                 style: TextStyle(
                 color: WHITE_COLOR,
                 fontWeight: FontWeight.w700,
@@ -95,10 +96,7 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
                       child: RaisedButton(
                           onPressed: () async{
                             if(cartVm.isActiveOrder){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => OrderConfirm()),
-                              );
+                              Navigator.of(context).push(CupertinoPageRoute(builder: (context) => OrderConfirm()));
                             }
                           },
                           color: cartVm.isActiveOrder ? PRICE_COLOR : Colors.grey,
@@ -107,7 +105,7 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
                             borderRadius: BorderRadius.circular(7.0),
                           ),
                           child:Text(
-                            "Order Now",
+                            "Đặt hàng",
                             style: TextStyle(
                                 color: WHITE_COLOR,
                                 fontWeight: FontWeight.w700,

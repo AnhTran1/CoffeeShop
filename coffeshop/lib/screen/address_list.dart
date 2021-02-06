@@ -11,6 +11,7 @@ import 'package:coffeshop/screen/address.dart';
 import 'package:coffeshop/screen/create_address.dart';
 import 'package:coffeshop/widget/error_widget/error_screen.dart';
 import 'package:coffeshop/widget/loading/circular_loading.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 class AddressList extends StatefulWidget {
@@ -51,13 +52,11 @@ class _AddressListState extends State<AddressList> {
             ),
             InkWell(
               onTap: (){
-                Navigator.push(
-                    context,
-                    new PageRouteBuilder(
-                        pageBuilder: (BuildContext context, _, __) {
-                          return new Address(type: true);
-                        }
-                    )
+                Navigator.of(context).push(
+                  new CupertinoPageRoute<bool>(
+                    fullscreenDialog: true,
+                    builder: (BuildContext context) => new Address(type: true)
+                  ),
                 );
               },
               child: Container(

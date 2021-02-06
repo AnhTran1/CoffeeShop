@@ -269,7 +269,7 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     child:Text(
-                                      "Order Now",
+                                      "Đặt hàng",
                                       style: TextStyle(
                                           color: TAB_COLOR,
                                           fontWeight: FontWeight.w700,
@@ -308,7 +308,7 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                                         borderRadius: BorderRadius.circular(10.0),
                                       ),
                                       child:Text(
-                                        "Order Now",
+                                        "Đặt hàng",
                                         style: TextStyle(
                                             color: TAB_COLOR,
                                             fontWeight: FontWeight.w700,

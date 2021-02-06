@@ -18,9 +18,11 @@ class ProductByCate extends StatefulWidget {
   _ProductByCateState createState() => _ProductByCateState();
 }
 
-class _ProductByCateState extends State<ProductByCate> {
+class _ProductByCateState extends State<ProductByCate>   with TickerProviderStateMixin {
+  AnimationController animationController;
   @override
   void initState() {
+    animationController = AnimationController( duration: const Duration(milliseconds: 750), vsync: this,animationBehavior: AnimationBehavior.preserve);
     initData();
     super.initState();
   }
@@ -32,6 +34,11 @@ class _ProductByCateState extends State<ProductByCate> {
       prdVM.setCategory(this.widget.categoryName);
       pVM.getProduct(cateId: widget.cateId,page: 1);
     });
+  }
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -50,7 +57,21 @@ class _ProductByCateState extends State<ProductByCate> {
                 padding: EdgeInsets.only(top:0.0),
                 itemCount: pVM.mProductList[widget.cateId].length,
                 itemBuilder: (BuildContext context, int index) {
-                  return ItemProduct(product:pVM.mProductList[widget.cateId][index]);
+                  final int count = pVM.mProductList[widget.cateId].length;
+                  print(count);
+                  final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+                    CurvedAnimation(
+                      parent: animationController,
+                      curve: Interval((1 / count) * index, 1.0,
+                          curve: Curves.fastOutSlowIn),
+                    ),
+                  );
+                  animationController.forward();
+                  return ItemProduct(
+                      animationController: animationController,
+                      animation: animation,
+                      product:pVM.mProductList[widget.cateId][index]
+                  );
                 },
                 staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
                 mainAxisSpacing: 10.0,

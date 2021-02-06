@@ -10,6 +10,7 @@ import 'package:coffeshop/widget/login_widget/already_have_an_account_acheck.dar
 import 'package:coffeshop/widget/login_widget/rounded_button.dart';
 import 'package:coffeshop/widget/login_widget/rounded_input_field.dart';
 import 'package:coffeshop/widget/login_widget/rounded_password_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -90,10 +91,7 @@ class _LoginState extends State<Login> {
                               StorageManager.saveData("user", json.encode(value.data)),
                               Future.delayed(Duration(milliseconds: 350),(){
                                 userVM.getUser();
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => BottomNavigation()),
-                                );
+                                Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (context) => BottomNavigation()));
                               })
                             } else if(value.loadFailed){
                               _btnController.reset(),
@@ -106,10 +104,7 @@ class _LoginState extends State<Login> {
                   ),
                   AlreadyHaveAnAccountCheck(
                     press: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignUp()),
-                      );
+                      Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (context) => SignUp()));
                     },
                   ),
                 ],

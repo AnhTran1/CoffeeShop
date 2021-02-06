@@ -41,9 +41,33 @@ class CartList extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        cartList[index].name,
-                        style: title,
+                      Row(
+                        children: [
+                          SizedBox(
+                            width:25.0,
+                            height: 25.0,
+                            child: Transform.scale(
+                              scale: 1.1,
+                              child: Theme(
+                                data: Theme.of(context).copyWith(
+                                  unselectedWidgetColor: Colors.white,
+                                ),
+                                child: Checkbox(
+                                  value: cartList[index].isCheck,
+                                  onChanged: (bool value) {
+                                    cartVm.onSelectItem(value,index);
+                                  },
+                                  activeColor: PRICE_COLOR,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10.0),
+                          Text(
+                            cartList[index].name,
+                            style: title,
+                          ),
+                        ],
                       ),
                       InkWell(
                         onTap: (){
@@ -72,26 +96,6 @@ class CartList extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SizedBox(
-                        width:25.0,
-                        height: 25.0,
-                        child: Transform.scale(
-                          scale: 1.1,
-                          child: Theme(
-                            data: Theme.of(context).copyWith(
-                              unselectedWidgetColor: Colors.white,
-                            ),
-                            child: Checkbox(
-                              value: cartList[index].isCheck,
-                              onChanged: (bool value) {
-                                cartVm.onSelectItem(value,index);
-                              },
-                              activeColor: PRICE_COLOR,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(7.0)),
                         child: CachedNetworkImage(

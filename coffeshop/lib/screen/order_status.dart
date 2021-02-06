@@ -40,7 +40,7 @@ class _OrderStatusState extends State<OrderStatus> with SingleTickerProviderStat
                   splashColor:Colors.grey.withOpacity(0.05),
                 ),
                 child: AppBar(
-                  title: Text("Order Status"),
+                  title: Text("Trạng thái đơn hàng"),
                   backgroundColor: BASE_APP_COLOR,
                   centerTitle: true,
                   bottom: TabBar(

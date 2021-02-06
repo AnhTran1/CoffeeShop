@@ -15,7 +15,7 @@ class Address extends StatefulWidget {
 }
 
 class _AddressState extends State<Address> {
-  var arrList = ["Tên người nhận","Số địa thoại","Địa chỉ chi tiết"];
+  var arrList = ["Tên người nhận","Số điện thoại","Địa chỉ chi tiết"];
   var arrEdit ;
   var nameController = new TextEditingController();
   var phoneController = new TextEditingController();

@@ -99,11 +99,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           )),
                     )),
               ),
-              IgnorePointer(
-                  child: AnimationScreen(
-                      color: Colors.brown
-                  )
-              )
+
             ]
         )
     );

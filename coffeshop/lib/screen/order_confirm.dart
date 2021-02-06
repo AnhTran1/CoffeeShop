@@ -4,6 +4,7 @@ import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/notifier/cart_notifier.dart';
 import 'package:coffeshop/screen/address.dart';
 import 'package:coffeshop/screen/address_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -180,13 +181,11 @@ class _OrderConfirmState extends State<OrderConfirm> {
                     ),
                     InkWell(
                       onTap: (){
-                        Navigator.push(
-                            context,
-                            new PageRouteBuilder(
-                                pageBuilder: (BuildContext context, _, __) {
-                                  return new AddressList(showAppbar: true);
-                                }
-                            )
+                        Navigator.of(context).push(
+                          new CupertinoPageRoute<bool>(
+                            fullscreenDialog: true,
+                            builder: (BuildContext context) => new AddressList(showAppbar: true),
+                          ),
                         );
                       },
                       child: Container(
