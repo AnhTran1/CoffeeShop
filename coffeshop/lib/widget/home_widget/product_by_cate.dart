@@ -13,7 +13,8 @@ import 'package:provider/provider.dart';
 class ProductByCate extends StatefulWidget {
   String categoryName;
   String cateId;
-  ProductByCate({this.categoryName,this.cateId});
+  bool isAdmin;
+  ProductByCate({this.categoryName,this.cateId,this.isAdmin});
   @override
   _ProductByCateState createState() => _ProductByCateState();
 }
@@ -30,7 +31,8 @@ class _ProductByCateState extends State<ProductByCate>   with TickerProviderStat
   initData() async{
     var prdVM = Provider.of<ProductDetailModel>(context,listen: false);
     var pVM = Provider.of<ProductModel>(context,listen: false);
-    await Future.delayed(Duration(milliseconds: 1500),(){
+    await Future.delayed(Duration(milliseconds: 10),(){
+      pVM.reCall();
       prdVM.setCategory(this.widget.categoryName);
       pVM.getProduct(cateId: widget.cateId,page: 1);
     });

@@ -22,13 +22,19 @@ class ProductModel extends ChangeNotifier {
     notifyListeners();
     return mResults;
   }
+  void reCall(){
+    mProductResult = MResults(loading: true,loaded: false,loadFailed: false,loadMore: false,message: "",data: null);
+    notifyListeners();
+  }
   void getProduct({String cateId, int page}) async{
-    mProductResult = await ApiResponse.getProductByCate(params: {"category_id": cateId});
-    if(mProductResult.loaded && mProductResult.data != null){
-      var jsonList = jsonDecode(jsonEncode(mProductResult.data))["data"] as List;
-      productList[cateId] = jsonList.map((i) => MProduct.fromJson(i)).toList();
-      mProductList = productList;
-    }
+    await Future.delayed(Duration(milliseconds: 1000),() async{
+      mProductResult = await ApiResponse.getProductByCate(params: {"category_id": cateId});
+      if(mProductResult.loaded && mProductResult.data != null){
+        var jsonList = jsonDecode(jsonEncode(mProductResult.data))["data"] as List;
+        productList[cateId] = jsonList.map((i) => MProduct.fromJson(i)).toList();
+        mProductList = productList;
+      }
+    });
     notifyListeners();
   }
 }

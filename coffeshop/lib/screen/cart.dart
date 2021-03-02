@@ -44,38 +44,38 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
             icon: Icon(Icons.close, color:WHITE_COLOR),
             onPressed: () => Navigator.of(context).pop(),
           ) : null,
-          actions: [
-            cartVm.mCart != null && cartVm.mCart.data.length > 0 ? Container(
-              margin: EdgeInsets.only(right: 10.0),
-              alignment: Alignment.center,
-              child: Text(
-                  "Chọn tất cả",
-                style: TextStyle(
-                color: WHITE_COLOR,
-                fontWeight: FontWeight.w700,
-                fontSize: 13.0,
-              ),
-              ),
-            ) : SizedBox(),
-            cartVm.mCart != null && cartVm.mCart.data.length > 0 ? SizedBox(
-              width:20.0,
-              height: 20.0,
-              child: Theme(
-                data: Theme.of(context).copyWith(
-                  unselectedWidgetColor: Colors.white,
-                ),
-                child: Checkbox(
-                  value: cartVm.selectAll,
-                  onChanged: (bool value) {
-                    cartVm.onSelectAll(value);
-                  },
-                  activeColor: PRICE_COLOR,
-                  focusColor: Colors.red,
-                ),
-              ),
-            ) : SizedBox(),
-            SizedBox(width: 20.0)
-          ],
+          // actions: [
+          //   cartVm.mCart != null && cartVm.mCart.data.length > 0 ? Container(
+          //     margin: EdgeInsets.only(right: 10.0),
+          //     alignment: Alignment.center,
+          //     child: Text(
+          //         "Chọn tất cả",
+          //       style: TextStyle(
+          //       color: WHITE_COLOR,
+          //       fontWeight: FontWeight.w700,
+          //       fontSize: 13.0,
+          //     ),
+          //     ),
+          //   ) : SizedBox(),
+          //   cartVm.mCart != null && cartVm.mCart.data.length > 0 ? SizedBox(
+          //     width:20.0,
+          //     height: 20.0,
+          //     child: Theme(
+          //       data: Theme.of(context).copyWith(
+          //         unselectedWidgetColor: Colors.white,
+          //       ),
+          //       child: Checkbox(
+          //         value: cartVm.selectAll,
+          //         onChanged: (bool value) {
+          //           cartVm.onSelectAll(value);
+          //         },
+          //         activeColor: PRICE_COLOR,
+          //         focusColor: Colors.red,
+          //       ),
+          //     ),
+          //   ) : SizedBox(),
+          //   SizedBox(width: 20.0)
+          // ],
         ),
         body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,11 +95,9 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
                     Expanded(
                       child: RaisedButton(
                           onPressed: () async{
-                            if(cartVm.isActiveOrder){
-                              Navigator.of(context).push(CupertinoPageRoute(builder: (context) => OrderConfirm()));
-                            }
+                            Navigator.of(context).push(CupertinoPageRoute(builder: (context) => OrderConfirm()));
                           },
-                          color: cartVm.isActiveOrder ? PRICE_COLOR : Colors.grey,
+                          color: PRICE_COLOR,
                           padding: EdgeInsets.only(top: 10.0,bottom: 10.0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(7.0),

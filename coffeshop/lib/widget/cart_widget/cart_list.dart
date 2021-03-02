@@ -43,26 +43,26 @@ class CartList extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          SizedBox(
-                            width:25.0,
-                            height: 25.0,
-                            child: Transform.scale(
-                              scale: 1.1,
-                              child: Theme(
-                                data: Theme.of(context).copyWith(
-                                  unselectedWidgetColor: Colors.white,
-                                ),
-                                child: Checkbox(
-                                  value: cartList[index].isCheck,
-                                  onChanged: (bool value) {
-                                    cartVm.onSelectItem(value,index);
-                                  },
-                                  activeColor: PRICE_COLOR,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10.0),
+                          // SizedBox(
+                          //   width:25.0,
+                          //   height: 25.0,
+                          //   child: Transform.scale(
+                          //     scale: 1.1,
+                          //     child: Theme(
+                          //       data: Theme.of(context).copyWith(
+                          //         unselectedWidgetColor: Colors.white,
+                          //       ),
+                          //       child: Checkbox(
+                          //         value: cartList[index].isCheck,
+                          //         onChanged: (bool value) {
+                          //           cartVm.onSelectItem(value,index);
+                          //         },
+                          //         activeColor: PRICE_COLOR,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          // SizedBox(width: 10.0),
                           Text(
                             cartList[index].name,
                             style: title,
@@ -72,7 +72,8 @@ class CartList extends StatelessWidget {
                       InkWell(
                         onTap: (){
                           Utils.showLoading(context);
-                          cartVm.removeCart(context,cartList[index].itemId).then((value) {
+                          cartVm.removeCart(context,cartList[index].id).then((value) {
+                            print(">>>>> ${cartList[index].itemId}");
                             Navigator.pop(context);
                             if(value.loaded){
                               cartVm.mCart.data.removeAt(index);

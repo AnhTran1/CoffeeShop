@@ -52,7 +52,7 @@ class MCartData {
     this.quantity,
     this.name,
     this.fileImage,
-    this.isCheck = false,
+    this.isCheck = true,
     this.priceQuantity ,
   });
 

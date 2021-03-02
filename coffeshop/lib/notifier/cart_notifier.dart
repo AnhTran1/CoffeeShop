@@ -101,9 +101,7 @@ class CartModel extends ChangeNotifier {
       mOrderDetail.clear();
     }
     if(mCart != null && mCart.data.length > 0) {
-      mCart.data.forEach((element) {
-        element.isCheck = false;
-      });
+      onTotalPrice();
     }
     notifyListeners();
   }
@@ -119,6 +117,7 @@ class CartModel extends ChangeNotifier {
       if(mCart != null && mCart.data != null){
         var prdVM = Provider.of<ProductDetailModel>(context,listen: false);
         prdVM.setBadge(mCart.data.length);
+        onReturnCart();
       }
     }
     notifyListeners();
@@ -128,6 +127,7 @@ class CartModel extends ChangeNotifier {
     mUpdateByAddCart = await ApiResponse.getListCart();
     if(mUpdateByAddCart.loaded){
       mCart = MCart.fromJson(mCartResult.data);
+      onReturnCart();
     }
     return mUpdateByAddCart;
   }

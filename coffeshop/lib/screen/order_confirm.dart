@@ -232,7 +232,7 @@ class _OrderConfirmState extends State<OrderConfirm> {
             child: RaisedButton(
               onPressed: (){
                 if(cartVm.mDeliveryAddress != null){
-
+                    print(cartVm.mDeliveryAddress.id);
                 }else {
                   Utils.showAlertMessage(context, "Vui lòng chọn một địa chỉ giao hàng");
                 }

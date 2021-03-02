@@ -1,4 +1,5 @@
 import 'package:coffeshop/bottom_navigation.dart';
+import 'package:coffeshop/bottom_navigation_admin.dart';
 import 'package:coffeshop/common/storage_manager.dart';
 import 'package:coffeshop/login.dart';
 import 'package:coffeshop/notifier/product_notifier.dart';
@@ -36,7 +37,7 @@ class _SplashState extends State<Splash> {
      if (token == null) {
        Navigator.of(context).pushReplacement(PageRouteBuilder(pageBuilder: (_, __, ___) => Login()));
      } else {
-       Navigator.of(context).pushReplacement( PageRouteBuilder(pageBuilder: (_, __, ___) => BottomNavigation()));
+       Navigator.of(context).pushReplacement( PageRouteBuilder(pageBuilder: (_, __, ___) => BottomNavigationAdmin()));
      }
    });
   }
