@@ -18,7 +18,9 @@ import '../common/styles.dart';
 // ignore: must_be_immutable
 class DetailProduct extends StatefulWidget {
   MProduct mProductData;
-  DetailProduct({this.mProductData});
+  bool isAdmin;
+  String cateName;
+  DetailProduct({this.mProductData,this.cateName,this.isAdmin});
   @override
   _DetailProductState createState() => _DetailProductState();
 }
@@ -85,7 +87,7 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                             child: Icon(Icons.arrow_back_ios,color: WHITE_COLOR)
                         ),
                       ),
-                      InkWell(
+                      widget.isAdmin ? SizedBox() : InkWell(
                           onTap: () {
                             Navigator.of(context).push(_createRoute());
                           },
@@ -157,12 +159,12 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                               color: PRICE_COLOR,
                             ) ,
                             padding: EdgeInsets.only(left: 16.0,right: 16.0,top: 2.0,bottom: 2.0),
-                            child: Text(prdVM.category),
+                            child: Text(widget.isAdmin ? widget.cateName : prdVM.category),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 16.0,bottom: 10.0),
                             child: Text(
-                              "About",
+                              "Mô tả",
                               style: title,
                             ),
                           ),
@@ -176,11 +178,11 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                             children: [
                               Expanded(
                                 child: Text(
-                                  "Cà phê espresso được đổ vào đáy cốc, tiếp theo là một lượng sữa nóng tương tự, được chuẩn bị bằng cách làm nóng và tạo kết cấu sữa bằng vòi hơi của máy pha cà phê espresso. Phần ba trên cùng của thức uống bao gồm bọt sữa; bọt này có thể được trang trí bằng các hình vẽ nghệ thuật được làm bằng cùng một loại sữa, được gọi là nghệ thuật pha cà phê .",
+                                  widget.mProductData.description,
                                   style: descriptionDetail,
                                 ),
                               ),
-                              Container(
+                              widget.isAdmin ? SizedBox() : Container(
                                 height: 175.0,
                                 width: 50,
                                 margin: EdgeInsets.only(left: 5.0),
@@ -233,7 +235,7 @@ class _DetailProductState extends State<DetailProduct> with SingleTickerProvider
                           ),
                         ),
                       ),
-                      Row(
+                     widget.isAdmin ? SizedBox() : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(

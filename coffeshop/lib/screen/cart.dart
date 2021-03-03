@@ -2,7 +2,6 @@ import 'package:coffeshop/common/animation/animation_counter/AnimationCounter.da
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/model/m_cart.dart';
 import 'package:coffeshop/notifier/cart_notifier.dart';
-import 'package:coffeshop/notifier/order_detail_notifier.dart';
 import 'package:coffeshop/screen/order_confirm.dart';
 import 'package:coffeshop/widget/cart_widget/cart_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,7 +30,6 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     final cartVm = Provider.of<CartModel>(context);
-    final orderDetailVm = Provider.of<OrderDetailNotifier>(context);
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(

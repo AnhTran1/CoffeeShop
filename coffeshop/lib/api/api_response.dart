@@ -33,4 +33,22 @@ class ApiResponse {
   static Future<MResults> removeAddress({List<Map<String, dynamic>> field}) async {
     return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiRemoveAddress, field:field);
   }
+  static Future<MResults> addCategory({List<Map<String, dynamic>> field}) async {
+    return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiAddCategory, field:field);
+  }
+  static Future<MResults> paymentProcess({List<Map<String, dynamic>> field}) async {
+    return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiPayment, field:field);
+  }
+  static Future<MResults> updateCategory({List<Map<String, dynamic>> field}) async {
+    return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiUpdateCategory, field:field);
+  }
+  static Future<MResults> removeCategory({List<Map<String, dynamic>> field}) async {
+    return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiRemoveCategory, field:field);
+  }
+  static Future<MResults> updateItem({List<Map<String, dynamic>> field}) async {
+    return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiUpdateItem, field:field);
+  }
+  static Future<MResults> removeItem({List<Map<String, dynamic>> field}) async {
+    return await APIManager(request: REQUEST.POST).callApi(url:ApiEndPoint.apiRemoveItem, field:field);
+  }
 }

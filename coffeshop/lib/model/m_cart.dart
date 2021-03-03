@@ -54,6 +54,7 @@ class MCartData {
     this.fileImage,
     this.isCheck = true,
     this.priceQuantity ,
+    this.description ,
   });
 
   int id;
@@ -63,6 +64,7 @@ class MCartData {
   int quantity;
   String name;
   String fileImage;
+  String description;
   bool isCheck;
   int priceQuantity;
 
@@ -74,5 +76,6 @@ class MCartData {
     quantity: json["quantity"] == null ? null : json["quantity"],
     name: json["name"] == null ? null : json["name"],
     fileImage: json["file_image"] == null ? null : json["file_image"],
+    description: json["file_image"] == null ? null : json["description"],
   );
 }

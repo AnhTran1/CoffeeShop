@@ -1,10 +1,10 @@
 import 'package:coffeshop/admin/home.dart';
-import 'package:coffeshop/admin/order_status.dart';
 import 'package:coffeshop/common/animation/spl/animation_screen.dart';
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/notifier/cart_notifier.dart';
 import 'package:coffeshop/notifier/product_detail_notifier.dart';
 import 'package:coffeshop/screen/cart.dart';
+import 'package:coffeshop/screen/order_status.dart';
 import 'package:coffeshop/screen/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

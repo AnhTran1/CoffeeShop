@@ -34,7 +34,11 @@ class ItemAddress extends StatelessWidget {
             decoration: InputDecoration(
               hintText: hintText,
               border: InputBorder.none,
-              hintStyle: messageStyle,
+              hintStyle: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.w400,
+                fontSize: 13.0,
+              ),
               contentPadding: EdgeInsets.only(right: 10.0)
             ),
           ),

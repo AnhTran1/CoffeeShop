@@ -137,4 +137,9 @@ class CartModel extends ChangeNotifier {
     getCart(context);
     return mRemoveCart;
   }
+  Future<MResults> payment({address_id}) async{
+    MResults mResults = MResults(loading: true,loaded: false,loadMore: false,loadFailed: false,message: "",data: null);
+    mResults = await ApiResponse.paymentProcess(field: [{"address_id":address_id}]);
+    return mResults;
+  }
 }

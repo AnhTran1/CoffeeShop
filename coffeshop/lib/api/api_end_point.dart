@@ -9,4 +9,11 @@ class ApiEndPoint {
   static final String apiAddAddress = "/api/v1/add-address";
   static final String apiGetAddress = "/api/v1/list-address";
   static final String apiRemoveAddress = "/api/v1/remove-address";
+  static final String apiAddCategory = "/api/v1/add-category";
+  static final String apiAddItemByCate = "/api/v1/add-item";
+  static final String apiPayment = "/api/v1/process-payment";
+  static final String apiUpdateCategory = "/api/v1/update-category";
+  static final String apiUpdateItem = "/api/v1/update-item";
+  static final String apiRemoveCategory = "/api/v1/remove-category";
+  static final String apiRemoveItem = "/api/v1/remove-item";
 }

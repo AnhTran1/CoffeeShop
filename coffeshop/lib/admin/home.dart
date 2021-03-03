@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:coffeshop/admin/category_detail.dart';
+import 'package:coffeshop/api/api_response.dart';
 import 'package:coffeshop/common/Utils.dart';
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/notifier/product_notifier.dart';
@@ -39,15 +40,15 @@ class _HomeState extends State<Home> {
                   itemCount: pVM.mCategory.data.length,
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
+                      onLongPress: (){},
                       onTap: (){
                         Navigator.of(context).push(CupertinoPageRoute(builder: (context) => CategoryDetail(title: pVM.mCategory.data[index].name,id: pVM.mCategory.data[index].id)));
                       },
                       child: Stack(
-                        alignment: Alignment.topRight,
+                        alignment: Alignment.bottomLeft,
                         children: [
                           Container(
-                            padding: EdgeInsets.only(left: 16.0,right: 16.0,bottom: 30,top: 30),
-                            alignment: Alignment.center,
+                            padding: EdgeInsets.only(left: 10.0,right: 10.0,bottom: 20,top: 10),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.all(Radius.circular(7.0)),
@@ -55,21 +56,63 @@ class _HomeState extends State<Home> {
                                 BoxShadow(color: GREY_COLOR, offset: Offset(0, 0), blurRadius: 3, spreadRadius: 1)
                               ],
                             ),
-                            child: Text(
-                              pVM.mCategory.data[index].name,
-                              style: TextStyle(
-                                color: BASE_APP_COLOR,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 30,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: BASE_APP_COLOR,
-                              borderRadius: BorderRadius.only(topRight:Radius.circular(7.0),bottomLeft: Radius.circular(40.0))
+                            child: Column(
+                              children: [
+                                Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    InkWell(
+                                      onTap:(){
+                                         pVM.setEditCateControl(cateName: pVM.mCategory.data[index].name,description: pVM.mCategory.data[index].description);
+                                         showModal(context,false,pVM.mCategory.data[index].id);
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.only(top: 3.0,bottom: 3.0,left: 10.0,right: 10.0),
+                                        decoration: BoxDecoration(
+                                          color: BASE_APP_COLOR,
+                                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                        ),
+                                        child: Text('Sửa',style: profileMail),
+                                      ),
+                                    ),
+                                    SizedBox(width: 5.0),
+                                    InkWell(
+                                      onTap: () async{
+                                       Utils.showAlertConfirm("Thông báo", "Xác nhận xóa danh mục: ${pVM.mCategory.data[index].name.toUpperCase()}", "Hủy", "Đồng ý", context, () {
+                                         Utils.showLoading(context);
+                                         ApiResponse.removeCategory(field: [{"category_id":pVM.mCategory.data[index].id}]).then((value){
+                                           Navigator.pop(context);
+                                           if(value.loaded){
+                                             pVM.getCategory();
+                                             Utils.showAlertMessage(context, "Xóa thành công");
+                                           } else if(value.loadFailed) {
+                                             Utils.showAlertMessage(context, value.message);
+                                           }
+                                         });
+                                       });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.only(top: 3.0,bottom: 3.0,left: 10.0,right: 10.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                        ),
+                                        child: Text('Xóa',style: profileMail),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 20.0),
+                                Text(
+                                  pVM.mCategory.data[index].name,
+                                  style: TextStyle(
+                                    color: BASE_APP_COLOR,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ],
@@ -83,7 +126,7 @@ class _HomeState extends State<Home> {
           )),
           InkWell(
             onTap: (){
-              showModal(context);
+              showModal(context,true,null);
             },
             child: Container(
               decoration: CustomDecoration,
@@ -104,7 +147,8 @@ class _HomeState extends State<Home> {
       )
     );
   }
-  showModal(context,){
+  showModal(context,bool isAdd,category_id){
+    isAdd ?? Provider.of<ProductModel>(context,listen: false).cleanAddCateList();
     showModalBottomSheet<void>(
       isScrollControlled: true,
       context: context,
@@ -114,6 +158,7 @@ class _HomeState extends State<Home> {
             topRight: Radius.circular(0.0)),
       ),
       builder: (BuildContext context) {
+        final pVM = Provider.of<ProductModel>(context);
         return Padding(
             padding: MediaQuery.of(context).viewInsets,
             child: Container(
@@ -127,25 +172,31 @@ class _HomeState extends State<Home> {
                         Padding(
                           padding:
                               const EdgeInsets.only(top: 16.0, bottom: 10.0),
-                          child: Text("Thêm danh mục",
+                          child: Text(isAdd ? "Thêm danh mục" : "Sửa danh mục",
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
                                   color: BASE_APP_COLOR)),
                         ),
                         ItemAddress(
+                          textEditingController: isAdd ? null : pVM.cateNameController,
                           title: "Tên danh mục",
                           hintText: "nhập tên danh mục",
-                          onChanged: (value) {},
+                          onChanged: (value) {
+                            pVM.onChangeAddCate(0, value);
+                          },
                         ),
                         Divider(
                           height: 1,
                           color: Colors.grey,
                         ),
                         ItemAddress(
+                          textEditingController: isAdd ? null : pVM.descriptionController,
                           title: "Mô tả",
                           hintText: "Nhập mô tả",
-                          onChanged: (value) {},
+                          onChanged: (value) {
+                            pVM.onChangeAddCate(1, value);
+                          },
                         ),
                         Divider(
                           height: 1,
@@ -157,6 +208,24 @@ class _HomeState extends State<Home> {
                       width: MediaQuery.of(context).size.width,
                       child: RaisedButton(
                           onPressed: () async{
+                           isAdd ? pVM.addCategory(context).then((value){
+                              if(value.loaded) {
+                                 pVM.getCategory();
+                                 Utils.showAlertMessage(context, 'Thêm danh mục thành công');
+                              }
+                              else if(value.loadFailed) {
+                                Utils.showAlertMessage(context, value.message);
+                              }
+                            }) :
+                           pVM.updateCategory(context,category_id).then((value){
+                             if(value.loaded) {
+                               pVM.getCategory();
+                               Utils.showAlertMessage(context, 'Sửa danh mục thành công');
+                             }
+                             else if(value.loadFailed) {
+                               Utils.showAlertMessage(context, value.message);
+                             }
+                           });
                           },
                           color: PRICE_COLOR,
                           padding: EdgeInsets.only(top: 10.0,bottom: 10.0),
@@ -164,7 +233,7 @@ class _HomeState extends State<Home> {
                             borderRadius: BorderRadius.circular(7.0),
                           ),
                           child:Text(
-                            "Thêm",
+                            isAdd ? "Thêm" : "Cập nhật",
                             style: TextStyle(
                                 color: WHITE_COLOR,
                                 fontWeight: FontWeight.w700,

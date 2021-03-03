@@ -60,7 +60,6 @@ class _ProductByCateState extends State<ProductByCate>   with TickerProviderStat
                 itemCount: pVM.mProductList[widget.cateId].length,
                 itemBuilder: (BuildContext context, int index) {
                   final int count = pVM.mProductList[widget.cateId].length;
-                  print(count);
                   final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
                     CurvedAnimation(
                       parent: animationController,
@@ -72,7 +71,10 @@ class _ProductByCateState extends State<ProductByCate>   with TickerProviderStat
                   return ItemProduct(
                       animationController: animationController,
                       animation: animation,
-                      product:pVM.mProductList[widget.cateId][index]
+                      product:pVM.mProductList[widget.cateId][index],
+                      isAdmin: widget.isAdmin,
+                      cateName: widget.categoryName,
+                      cateId:widget.cateId
                   );
                 },
                 staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),

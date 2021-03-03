@@ -1,22 +1,31 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:coffeshop/admin/add_item_cate.dart';
+import 'package:coffeshop/api/api_response.dart';
 import 'package:coffeshop/common/Utils.dart';
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/model/m_product.dart';
 import 'package:coffeshop/notifier/product_detail_notifier.dart';
+import 'package:coffeshop/notifier/product_notifier.dart';
 import 'package:coffeshop/screen/detail_product.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // ignore: must_be_immutable
 class ItemProduct extends StatelessWidget {
-  ItemProduct({Key key,this.product,this.animationController,this.animation}): super(key: key);
+  ItemProduct({Key key,this.product,this.animationController,this.animation,this.isAdmin,this.cateName,this.cateId}): super(key: key);
   MProduct product;
+  String cateName;
+  String cateId;
+  bool isAdmin;
   final AnimationController animationController;
   final Animation<dynamic> animation;
   @override
   Widget build(BuildContext context) {
     final prdVM = Provider.of<ProductDetailModel>(context);
+    final pVM = Provider.of<ProductModel>(context);
+    print(cateName);
     return AnimatedBuilder(
       animation: animationController,
      builder: (context, child) {
@@ -28,7 +37,7 @@ class ItemProduct extends StatelessWidget {
              Navigator.push(
                context,
                PageRouteBuilder(
-                 pageBuilder: (c, a1, a2) => DetailProduct(mProductData: product),
+                 pageBuilder: (c, a1, a2) => DetailProduct(mProductData: product,isAdmin: isAdmin,cateName: cateName),
                  transitionsBuilder: (c, anim, a2, child) => FadeTransition(opacity: anim, child: child),
                  transitionDuration: Duration(milliseconds: 350),
                ),
@@ -58,7 +67,55 @@ class ItemProduct extends StatelessWidget {
                          ),
                        ),
                      ),
-                     Row(
+                     isAdmin ? Padding(
+                       padding: const EdgeInsets.all(5.0),
+                       child: Row(
+                         crossAxisAlignment: CrossAxisAlignment.end,
+                         mainAxisAlignment: MainAxisAlignment.end,
+                         children: [
+                           InkWell(
+                             onTap: (){
+                               Provider.of<ProductModel>(context,listen: false).setEditItemControl(name: product.name,quantity: product.quantity,price: product.price,description: product.description);
+                               Navigator.of(context).push(CupertinoPageRoute(builder: (context) => AddItemCate(cateId: cateId,isAdd: false,imageLink: product.fileImage,id: product.id.toString())));
+                             },
+                             child: Container(
+                               padding: EdgeInsets.only(top: 3.0,bottom: 3.0,left: 10.0,right: 10.0),
+                               decoration: BoxDecoration(
+                                 color: BASE_APP_COLOR,
+                                 borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                               ),
+                               child: Text('Sửa',style: profileMail),
+                             ),
+                           ),
+                           SizedBox(width: 5.0),
+                           InkWell(
+                             onTap: () async{
+                               Utils.showAlertConfirm("Thông báo", "Xác nhận xóa danh mục: ${product.name}", "Hủy", "Đồng ý", context, () {
+                                 Utils.showLoading(context);
+                                 ApiResponse.removeItem(field: [{"item_id":product.id}]).then((value){
+                                   Navigator.pop(context);
+                                   if(value.loaded){
+                                     pVM.getProduct(cateId: cateId,page: 1);
+                                     Utils.showAlertMessage(context, "Xóa thành công");
+                                   } else if(value.loadFailed) {
+                                     Utils.showAlertMessage(context, value.message);
+                                   }
+                                 });
+                               });
+                             },
+                             child: Container(
+                                 padding: EdgeInsets.only(top: 3.0,bottom: 3.0,left: 10.0,right: 10.0),
+                                 decoration: BoxDecoration(
+                                   color: Colors.red,
+                                   borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                 ),
+                                 child: Text('Xóa',style: profileMail),
+                             ),
+                           ),
+                         ],
+                       ),
+                     ) : SizedBox(),
+                     isAdmin ?  SizedBox() : Row(
                        mainAxisAlignment: MainAxisAlignment.end,
                        children: [
                          Container(

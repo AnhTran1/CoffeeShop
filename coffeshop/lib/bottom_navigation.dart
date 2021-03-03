@@ -1,3 +1,4 @@
+import 'package:coffeshop/common/Utils.dart';
 import 'package:coffeshop/common/animation/spl/animation_screen.dart';
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/notifier/cart_notifier.dart';
@@ -21,6 +22,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int currentIndex = 0;
   var selectedColor = 0xFF448dec;
   var unselectedColor = 0xFF6e6e6e;
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final prdVM = Provider.of<ProductDetailModel>(context);

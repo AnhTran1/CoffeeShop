@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:coffeshop/bottom_navigation.dart';
 import 'package:coffeshop/common/Utils.dart';
 import 'package:coffeshop/common/styles.dart';
 import 'package:coffeshop/notifier/cart_notifier.dart';
@@ -52,10 +53,6 @@ class _OrderConfirmState extends State<OrderConfirm> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                cartVm.mOrderDetail[index].name,
-                                style: title,
-                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
@@ -78,23 +75,16 @@ class _OrderConfirmState extends State<OrderConfirm> {
                                     child: Container(
                                       height: 100,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Container(
-                                              width: Utils.width(context) - 130,
-                                              padding: EdgeInsets.all(5.0),
-                                              child: Text(
-                                                "Cà phê espresso được đổ vào đáy cốc, tiếp theo là một lượng sữa nóng tương tự, được chuẩn bị bằng cách làm nóng và tạo kết cấu sữa bằng vòi hơi củ",
-                                                style: TextStyle(
-                                                  color: WHITE_COLOR,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 14.0,
-                                                  height: 1.5,
-                                                ),
-                                                maxLines: 3,
-                                                overflow: TextOverflow.ellipsis,
-                                              )),
+                                          Padding(
+                                            padding:EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              cartVm.mOrderDetail[index].name,
+                                              style: title,
+                                            ),
+                                          ),
                                           Row(
                                             mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -156,7 +146,7 @@ class _OrderConfirmState extends State<OrderConfirm> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Phí giao hàng:",style: titleOrderDetail),
-                              Text("+10000.0 VND",style: TextStyle(
+                              Text("10000.0 VND",style: TextStyle(
                                 color: Colors.red,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 15.0,
@@ -168,7 +158,7 @@ class _OrderConfirmState extends State<OrderConfirm> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Tổng tiền:",style: titleOrderDetail),
-                              Text("x ${cartVm.totalPrice + 10000}.0 VND",style: TextStyle(
+                              Text("${cartVm.totalPrice + 10000}.0 VND",style: TextStyle(
                                 color: Colors.red,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 15.0,
@@ -230,9 +220,17 @@ class _OrderConfirmState extends State<OrderConfirm> {
             width: Utils.width(context),
             padding: EdgeInsets.only(left: 10.0,right: 10.0),
             child: RaisedButton(
-              onPressed: (){
+              onPressed: () async{
                 if(cartVm.mDeliveryAddress != null){
-                    print(cartVm.mDeliveryAddress.id);
+                  Utils.showLoading(context);
+                    cartVm.payment(address_id:cartVm.mDeliveryAddress.id).then((value) {
+                      Navigator.of(context).pop();
+                       if(value.loaded){
+                         Navigator.of(context).pushReplacement( PageRouteBuilder(pageBuilder: (_, __, ___) => BottomNavigation()));
+                       } else if(value.loadFailed) {
+                         Utils.showAlertMessage(context, value.message);
+                       }
+                    });
                 }else {
                   Utils.showAlertMessage(context, "Vui lòng chọn một địa chỉ giao hàng");
                 }
