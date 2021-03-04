@@ -24,10 +24,10 @@ class _CategoryDetailState extends State<CategoryDetail> {
       ),
       body: Column(
         children: [
-          Expanded(child: ProductByCate(cateId:  (widget.id - 1).toString(),categoryName:widget.title,isAdmin: true)),
+          Expanded(child: ProductByCate(cateId:  (widget.id).toString(),categoryName:widget.title,isAdmin: true)),
           InkWell(
             onTap: (){
-              Navigator.of(context).push(CupertinoPageRoute(builder: (context) => AddItemCate(cateId: (widget.id - 1).toString())));
+              Navigator.of(context).push(CupertinoPageRoute(builder: (context) => AddItemCate(cateId: (widget.id).toString())));
             },
             child: Container(
               decoration: CustomDecoration,

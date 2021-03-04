@@ -27,7 +27,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
       tabController = TabController(vsync: this, length: pVM.mCategory.data.length);
       pVM.mCategory.data.forEach((element) {
         tabs.add(_customTab(element.name));
-        tabBody.add(ProductByCate(categoryName: element.name,cateId:(element.id - 1).toString(),isAdmin: false));
+        tabBody.add(ProductByCate(categoryName: element.name,cateId:(element.id).toString(),isAdmin: false));
       });
     } else {
       tabController = TabController(vsync: this, length:0);
