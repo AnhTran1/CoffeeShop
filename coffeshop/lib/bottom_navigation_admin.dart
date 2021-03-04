@@ -33,6 +33,7 @@ class _BottomNavigationAdminState extends State<BottomNavigationAdmin> {
                   children: [
                     Home(),
                     OrderStatus(),
+                    Profile(isAdmin: true),
                   ],
                   index: currentIndex,
                 ),
@@ -58,6 +59,7 @@ class _BottomNavigationAdminState extends State<BottomNavigationAdmin> {
                         items: [
                           BottomNavigationBarItem(icon: Icon(Icons.home),title: Text("")),
                           BottomNavigationBarItem(icon: Icon(Icons.drive_eta),title: Text("")),
+                          BottomNavigationBarItem(icon: Icon(Icons.account_circle),title: Text("")),
                         ],
                       ),
                       decoration: BoxDecoration(

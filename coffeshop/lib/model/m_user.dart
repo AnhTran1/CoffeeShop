@@ -7,9 +7,11 @@ class MUser {
     this.emailVerifiedAt,
     this.passWord,
     this.conFirmPassword,
+    this.user_type
   });
 
   int id;
+  int user_type;
   String name;
   String email;
   String apiToken;
@@ -23,6 +25,7 @@ class MUser {
     email: json["email"] == null ? null : json["email"],
     apiToken: json["api_token"] == null ? null : json["api_token"],
     emailVerifiedAt: json["email_verified_at"],
+    user_type: json["user_type"],
   );
 }
 

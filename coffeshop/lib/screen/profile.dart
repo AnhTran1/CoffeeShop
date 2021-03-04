@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
+  bool isAdmin;
+  Profile({this.isAdmin = false});
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -113,7 +115,7 @@ class _ProfileState extends State<Profile> {
               )
             ],
           ),
-          Expanded(
+          widget.isAdmin  ? SizedBox() : Expanded(
             child: AddressList(showAppbar: false)
           )
         ],

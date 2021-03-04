@@ -9,6 +9,7 @@ import 'package:coffeshop/model/m_category.dart';
 import 'package:coffeshop/model/m_product.dart';
 import 'package:coffeshop/model/m_results.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http_parser/http_parser.dart';
 
 class ProductModel extends ChangeNotifier {
   MCategory mCategory;
@@ -162,10 +163,18 @@ class ProductModel extends ChangeNotifier {
   }
   validateFormAddProduct({isAdd}){
     print(">>>> ${imagePicker}");
-    if (addProductList[0].toString().length < 1 || addProductList[1].toString().length < 1 || addProductList[2].toString().length < 1 || addProductList[3].toString().length < 1 || isAdd ? imagePicker == null : null){
-      return false;
+    if(isAdd){
+      if (addProductList[0].toString().length < 1 || addProductList[1].toString().length < 1 || addProductList[2].toString().length < 1 || addProductList[3].toString().length < 1 || imagePicker == null ){
+        return false;
+      } else {
+        return true;
+      }
     } else {
-      return true;
+      if (addProductList[0].toString().length < 1 || addProductList[1].toString().length < 1 || addProductList[2].toString().length < 1 || addProductList[3].toString().length < 1 ){
+        return false;
+      } else {
+        return true;
+      }
     }
   }
   // ignore: missing_return
@@ -179,7 +188,8 @@ class ProductModel extends ChangeNotifier {
     "quantity":addProductList[2],
     "file_image":imagePicker != null ? await MultipartFile.fromFile(
       imagePicker.path,
-    filename: imagePicker.path.split('/').last,
+      filename: imagePicker.path.split('/').last,
+      contentType: new MediaType("image", "jpeg"),
     ) : null,
     });
     try {
@@ -222,10 +232,11 @@ class ProductModel extends ChangeNotifier {
       "file_image":imagePicker != null ? await MultipartFile.fromFile(
         imagePicker.path,
         filename: imagePicker.path.split('/').last,
-      ) : "",
+        contentType: new MediaType("image", "jpeg"),
+      ) : null,
     });
     try {
-      Response response = await Dio().post('http://coffee.pacom-dev.com/api/v1/add-item',data: formData,options: Options(
+      Response response = await Dio().post('http://coffee.pacom-dev.com/api/v1/update-item',data: formData,options: Options(
           headers:  {
             "Authorization": "${await StorageManager.readData("token")}"
           },
@@ -244,10 +255,7 @@ class ProductModel extends ChangeNotifier {
     } on FormatException {
       mResults = MResults(loading: false,loaded: false,loadMore: false,loadFailed: true,message: "FormatException",data: null);
       return mResults;
-    } on Exception {
-      mResults = MResults(loading: false,loaded: false,loadMore: false,loadFailed: true,message: "Exception",data: null);
-      return mResults;
-    }  catch (e) {
+    } catch (e) {
       mResults = MResults(loading: false,loaded: false,loadMore: false,loadFailed: true,message: e.toString(),data: null);
       return mResults;
     }

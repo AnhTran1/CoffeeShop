@@ -33,11 +33,17 @@ class _SplashState extends State<Splash> {
   }
   void navigatorPage() async {
     String token = await StorageManager.readData("token");
+    int user_type = await StorageManager.readData("user_type");
     await Future.delayed(Duration(milliseconds: 350),(){
      if (token == null) {
-       Navigator.of(context).pushReplacement(PageRouteBuilder(pageBuilder: (_, __, ___) => Login()));
+        Navigator.of(context).pushReplacement(PageRouteBuilder(pageBuilder: (_, __, ___) => Login()));
      } else {
-       Navigator.of(context).pushReplacement( PageRouteBuilder(pageBuilder: (_, __, ___) => BottomNavigationAdmin()));
+     if (user_type == 0){
+         Navigator.of(context).pushReplacement( PageRouteBuilder(pageBuilder: (_, __, ___) => BottomNavigationAdmin()));
+       }
+     else {
+       Navigator.of(context).pushReplacement( PageRouteBuilder(pageBuilder: (_, __, ___) => BottomNavigation()));
+       }
      }
    });
   }

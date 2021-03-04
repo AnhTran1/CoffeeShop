@@ -84,7 +84,7 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
                 child:SingleChildScrollView(
                     child: CartList())
               ),
-              Container(
+              cartVm.mCart != null && cartVm.mCart.data.length > 0 ? Container(
                 color: BASE_APP_COLOR,
                 padding: const EdgeInsets.only(left: 10.0,right: 10.0),
                 child: Row(
@@ -121,7 +121,7 @@ class _CartState extends State<Cart>  with SingleTickerProviderStateMixin{
                     )
                   ],
                 ),
-              )
+              ) : SizedBox()
             ],
           ),
       ),

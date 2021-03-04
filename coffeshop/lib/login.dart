@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:coffeshop/bottom_navigation.dart';
+import 'package:coffeshop/bottom_navigation_admin.dart';
 import 'package:coffeshop/common/Utils.dart';
 import 'package:coffeshop/common/storage_manager.dart';
 import 'package:coffeshop/common/styles.dart';
+import 'package:coffeshop/model/m_user.dart';
 import 'package:coffeshop/notifier/user_notifier.dart';
 import 'package:coffeshop/sign_up.dart';
 import 'package:coffeshop/widget/login_widget/already_have_an_account_acheck.dart';
@@ -89,9 +91,14 @@ class _LoginState extends State<Login> {
                             if(value.loaded){
                               _btnController.success(),
                               StorageManager.saveData("user", json.encode(value.data)),
-                              Future.delayed(Duration(milliseconds: 350),(){
-                                userVM.getUser();
-                                Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (context) => BottomNavigation()));
+                              Future.delayed(Duration(milliseconds: 350),() async{
+                               MUser use = MUser.fromJson(value.data) ;
+                               userVM.getUser();
+                                if (use.user_type == 0){
+                                  Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (context) => BottomNavigationAdmin()));
+                                } else{
+                                  Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (context) => BottomNavigation()));
+                                }
                               })
                             } else if(value.loadFailed){
                               _btnController.reset(),

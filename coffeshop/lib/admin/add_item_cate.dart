@@ -34,7 +34,7 @@ class _AddItemCateState extends State<AddItemCate> {
     final pVM = Provider.of<ProductModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Thêm sản phẩm"),
+        title: Text(widget.isAdd ? "Thêm sản phẩm" : "Sửa sản phẩm"),
         backgroundColor: BASE_APP_COLOR,
       ),
       body: GestureDetector(

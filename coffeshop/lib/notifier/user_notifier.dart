@@ -20,6 +20,7 @@ class UserModel extends ChangeNotifier {
     mUser = null;
     await StorageManager.deleteData("user");
     await StorageManager.deleteData("token");
+    await StorageManager.deleteData("user_type");
     notifyListeners();
   }
   void setOnTapLogin(value) async{
@@ -34,6 +35,7 @@ class UserModel extends ChangeNotifier {
       mUser = MUser.fromJson(json.decode(await StorageManager.readData("user")));
       if(await StorageManager.readData("token") == null){
         StorageManager.saveData("token", mUser.apiToken);
+        StorageManager.saveData("user_type", mUser.user_type);
       }
     }
     notifyListeners();

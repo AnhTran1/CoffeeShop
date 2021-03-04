@@ -19,6 +19,7 @@ class _CategoryDetailState extends State<CategoryDetail> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        backgroundColor: BASE_APP_COLOR,
         centerTitle: true,
       ),
       body: Column(
